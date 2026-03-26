@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const routes = {
-        'home': 'tpl-home',
         'dashboard': 'tpl-dashboard',
         'add-project': 'tpl-add-project',
         'gallery': 'tpl-gallery'
@@ -45,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderPage() {
         let hash = window.location.hash.substring(1);
         if (!hash || !routes[hash]) {
-            hash = 'home';
+            hash = 'dashboard';
         }
 
         const templateId = routes[hash];
