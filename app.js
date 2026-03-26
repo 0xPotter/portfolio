@@ -103,6 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const form = document.getElementById('add-project-form');
             const fileInput = document.getElementById('proj-image');
             const fileLabel = document.getElementById('proj-image-label');
+            const galleryInput = document.getElementById('proj-gallery');
+            const galleryLabel = document.getElementById('proj-gallery-label');
             const statusDiv = document.getElementById('upload-status');
             const submitBtn = document.getElementById('submit-project-btn');
 
@@ -128,10 +130,24 @@ document.addEventListener('DOMContentLoaded', () => {
                             fileInput.removeAttribute('required');
                             fileLabel.textContent = 'Keep existing or drop new visual';
                         }
+                        if(data.galleryUrls && data.galleryUrls.length > 0) {
+                            galleryLabel.textContent = `${data.galleryUrls.length} secondary visual(s) saved (Upload new to replace)`;
+                        }
                     }
                 });
             } else {
                 fileInput.setAttribute('required', 'required');
+            }
+
+            if (galleryInput) {
+                galleryInput.addEventListener('change', (e) => {
+                    const count = e.target.files.length;
+                    if (count > 0) {
+                        galleryLabel.textContent = `${count} secondary visual(s) selected`;
+                    } else {
+                        galleryLabel.textContent = 'Drop multiple secondary visuals here';
+                    }
+                });
             }
 
             if (fileInput) {
@@ -174,11 +190,26 @@ document.addEventListener('DOMContentLoaded', () => {
                         // 1. Upload Image (only if a new one is selected)
                         let imageUrl = null;
                         if (fileInput.files.length > 0) {
-                            statusDiv.textContent = 'Uploading imagery...';
+                            statusDiv.textContent = 'Uploading primary imagery...';
                             const file = fileInput.files[0];
                             const imageRef = ref(storage, `projects/${Date.now()}_${file.name}`);
                             await uploadBytes(imageRef, file);
                             imageUrl = await getDownloadURL(imageRef);
+                        }
+
+                        // 1.5. Upload Gallery Images (only if selected)
+                        let galleryUrls = null;
+                        if (galleryInput && galleryInput.files.length > 0) {
+                            statusDiv.textContent = 'Uploading secondary visual(s)...';
+                            galleryUrls = [];
+                            const galleryFiles = Array.from(galleryInput.files);
+                            for (let i = 0; i < galleryFiles.length; i++) {
+                                const gFile = galleryFiles[i];
+                                const gImageRef = ref(storage, `projects/${Date.now()}_gallery_${i}_${gFile.name}`);
+                                await uploadBytes(gImageRef, gFile);
+                                const gUrl = await getDownloadURL(gImageRef);
+                                galleryUrls.push(gUrl);
+                            }
                         }
 
                         // 2. Save Document
@@ -190,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 narrative
                             };
                             if (imageUrl) updateData.imageUrl = imageUrl;
+                            if (galleryUrls) updateData.galleryUrls = galleryUrls;
                             
                             await updateDoc(doc(db, 'projects', editingId), updateData);
                             statusDiv.classList.replace('text-stone-500', 'text-green-600');
@@ -200,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 category,
                                 narrative,
                                 imageUrl,
+                                galleryUrls: galleryUrls || [],
                                 createdAt: serverTimestamp(),
                                 published: true
                             });
@@ -210,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Reset form and return to dashboard
                         form.reset();
                         fileLabel.textContent = 'Drop primary visual here';
+                        if(galleryInput) galleryLabel.textContent = 'Drop multiple secondary visuals here';
                         fileInput.parentElement.style.backgroundImage = 'none';
                         setTimeout(() => {
                             window.location.hash = 'dashboard';

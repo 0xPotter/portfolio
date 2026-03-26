@@ -168,6 +168,17 @@
                 </div>
             </section>
 
+            <section>
+                <label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-4">Project Gallery (Secondary Images)</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="col-span-2 relative aspect-[16/5] bg-surface-container-low rounded-sm border border-dashed border-outline-variant/50 flex flex-col items-center justify-center group cursor-pointer hover:bg-stone-200 transition-colors">
+                        <span class="material-symbols-outlined text-stone-400 mb-2">collections</span>
+                        <span id="proj-gallery-label" class="text-[0.6875rem] uppercase tracking-tighter text-stone-500">Drop multiple secondary visuals here</span>
+                        <input id="proj-gallery" class="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/*" multiple>
+                    </div>
+                </div>
+            </section>
+
             <div class="flex flex-col gap-3 pt-4">
                 <button id="submit-project-btn" class="w-full h-12 bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98] transition-transform" type="submit">Publish Project</button>
             </div>

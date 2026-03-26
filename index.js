@@ -31,11 +31,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             let catLabel = data.category ? data.category.toLowerCase() : 'all';
             // Determine grayscale behavior based on category or random, but let's just make it hover-reveal like the existing design
             html += `
-            <div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="${catLabel}">
-                <img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" alt="${data.title}" src="${data.imageUrl}">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
-                    <p class="text-[10px] tracking-widest uppercase text-white font-medium">${data.title} / ${data.category}</p>
-                </div>
+            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500" data-category="${catLabel}">
+                <a href="project.html?id=${doc.id}" class="block w-full h-full overflow-hidden">
+                    <img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" alt="${data.title}" src="${data.imageUrl}">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+                        <p class="text-[10px] tracking-widest uppercase text-white font-medium">${data.title} / ${data.category}</p>
+                    </div>
+                </a>
             </div>`;
         });
         
