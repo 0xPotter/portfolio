@@ -37,6 +37,24 @@
             font-size: 20px;
         }
     </style>
+    <script type="module">
+        import { auth, onAuthStateChanged, signOut } from './firebase-config.js';
+
+        // Protected Route Guard
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace('login.html');
+            } else {
+                console.log("Admin session active:", user.email);
+            }
+        });
+
+        window.logout = () => {
+            signOut(auth).then(() => {
+                window.location.replace('login.html');
+            }).catch(err => console.error(err));
+        };
+    </script>
 </head>
 <body class="bg-surface font-inter text-on-surface antialiased bg-stone-50 text-stone-900 h-screen overflow-hidden">
 
@@ -50,7 +68,7 @@
     </div>
     <div class="flex items-center gap-4">
         <a href="index.html" class="text-xs uppercase tracking-widest font-bold">Public View</a>
-        <div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-stone-200">
+        <div onclick="window.logout()" title="Logout" class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-stone-200 cursor-pointer hover:opacity-70 transition-opacity">
             <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3">
         </div>
     </div>
