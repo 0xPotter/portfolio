@@ -1,4 +1,6 @@
-import { db, collection, getDocs, query, where, orderBy } from './firebase-config.js';
+import { db, collection, getDocs, query, orderBy } from './firebase-config.js';
+
+window.projectsData = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
     const masonryContainer = document.querySelector('.masonry-grid');
@@ -28,16 +30,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             if(data.imageUrl) allImages.push(data.imageUrl);
 
+            window.projectsData[doc.id] = data;
+
             let catLabel = data.category ? data.category.toLowerCase() : 'all';
-            // Determine grayscale behavior based on category or random, but let's just make it hover-reveal like the existing design
             html += `
-            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500" data-category="${catLabel}">
-                <a href="project.html?id=${doc.id}" class="block w-full h-full overflow-hidden">
-                    <img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" alt="${data.title}" src="${data.imageUrl}">
+            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500 cursor-pointer" data-category="${catLabel}" onclick="openProjectModal('${doc.id}')">
+                <div class="block w-full h-full overflow-hidden">
+                    <img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}">
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
                         <p class="text-[10px] tracking-widest uppercase text-white font-medium">${data.title} / ${data.category}</p>
                     </div>
-                </a>
+                </div>
             </div>`;
         });
         
@@ -101,3 +104,55 @@ function initializeFilters() {
         });
     });
 }
+
+// Global modal handlers
+window.openProjectModal = (id) => {
+    const data = window.projectsData[id];
+    if (!data) return;
+
+    document.getElementById('modal-category').textContent = data.category || '';
+    document.getElementById('modal-title').textContent = data.title;
+    document.getElementById('modal-narrative').innerHTML = (data.narrative || '').replace(/\n/g, '<br>');
+    document.getElementById('modal-hero').src = data.imageUrl;
+
+    const galleryContainer = document.getElementById('modal-gallery');
+    if (data.galleryUrls && data.galleryUrls.length > 0) {
+        galleryContainer.classList.remove('hidden');
+        let html = '';
+        data.galleryUrls.forEach((url, index) => {
+            const isLastOdd = (index === data.galleryUrls.length - 1) && (data.galleryUrls.length % 2 !== 0);
+            const colClass = isLastOdd ? 'md:col-span-2' : '';
+            html += `
+                <div class="w-full h-full overflow-hidden bg-surface-container rounded-sm ${colClass}">
+                    <img class="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-1000 ease-out" src="${url}" alt="Secondary Visual">
+                </div>
+            `;
+        });
+        galleryContainer.innerHTML = html;
+    } else {
+        galleryContainer.innerHTML = '';
+        galleryContainer.classList.add('hidden');
+    }
+
+    const modal = document.getElementById('project-modal');
+    modal.classList.remove('hidden');
+    // Lock body scroll
+    document.body.classList.add('overflow-hidden');
+    
+    // Animate in
+    requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+    });
+};
+
+document.getElementById('close-modal').addEventListener('click', () => {
+    const modal = document.getElementById('project-modal');
+    modal.classList.add('opacity-0');
+    
+    // Unlock body scroll
+    document.body.classList.remove('overflow-hidden');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 500); // Wait for transition duration
+});
