@@ -1,3 +1,5 @@
+import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp } from './firebase-config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const appRoot = document.getElementById('app-root');
     const navLinks = document.querySelectorAll('.nav-link');
@@ -41,6 +43,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function initRouteLogic(hash) {
+        if (hash === 'add-project') {
+            const form = document.getElementById('add-project-form');
+            const fileInput = document.getElementById('proj-image');
+            const fileLabel = document.getElementById('proj-image-label');
+            const statusDiv = document.getElementById('upload-status');
+            const submitBtn = document.getElementById('submit-project-btn');
+
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        fileLabel.textContent = e.target.files[0].name;
+                    } else {
+                        fileLabel.textContent = 'Drop primary visual here';
+                    }
+                });
+            }
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Publishing...';
+                    statusDiv.classList.remove('hidden', 'text-red-600', 'text-green-600');
+                    statusDiv.classList.add('text-stone-500');
+                    statusDiv.textContent = 'Starting upload...';
+
+                    try {
+                        const title = document.getElementById('proj-title').value;
+                        const category = document.getElementById('proj-category').value;
+                        const narrative = document.getElementById('proj-narrative').value;
+                        const file = fileInput.files[0];
+
+                        // 1. Upload Image
+                        statusDiv.textContent = 'Uploading imagery...';
+                        const imageRef = ref(storage, `projects/${Date.now()}_${file.name}`);
+                        await uploadBytes(imageRef, file);
+                        const imageUrl = await getDownloadURL(imageRef);
+
+                        // 2. Save Document
+                        statusDiv.textContent = 'Saving narrative...';
+                        await addDoc(collection(db, 'projects'), {
+                            title,
+                            category,
+                            narrative,
+                            imageUrl,
+                            createdAt: serverTimestamp(),
+                            published: true
+                        });
+
+                        statusDiv.classList.replace('text-stone-500', 'text-green-600');
+                        statusDiv.textContent = 'Project successfully published!';
+                        
+                        // Reset form and return to dashboard
+                        form.reset();
+                        fileLabel.textContent = 'Drop primary visual here';
+                        setTimeout(() => {
+                            window.location.hash = 'dashboard';
+                        }, 1500);
+
+                    } catch (error) {
+                        console.error('Error adding project:', error);
+                        statusDiv.classList.replace('text-stone-500', 'text-red-600');
+                        statusDiv.textContent = 'Error: ' + error.message;
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Publish Project';
+                    }
+                });
+            }
+        }
+    }
+
     function renderPage() {
         let hash = window.location.hash.substring(1);
         if (!hash || !routes[hash]) {
@@ -58,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveNav(hash);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
+            initRouteLogic(hash);
+
             // Auto close sidebar on mobile when navigating
             if (window.innerWidth < 768) {
                 sidebar.classList.add('-translate-x-full');

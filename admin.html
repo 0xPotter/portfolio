@@ -138,10 +138,23 @@
             <span class="text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2 block">Curation Hub</span>
             <h2 class="text-[1.75rem] font-bold tracking-tight text-primary leading-none">Add New Project</h2>
         </header>
-        <form class="space-y-12 pb-24">
+        <form id="add-project-form" class="space-y-12 pb-24">
             <section class="space-y-8">
-                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Title</label><input class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md" placeholder="e.g. Kinetic Sculptures 01" type="text" required></div>
-                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Narrative</label><textarea class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md resize-none leading-relaxed" placeholder="Describe the creative intent..." rows="4" required></textarea></div>
+                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Title</label><input id="proj-title" class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md" placeholder="e.g. Kinetic Sculptures 01" type="text" required></div>
+                
+                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Category</label>
+                    <select id="proj-category" class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface font-inter text-md" required>
+                        <option value="" disabled selected>Select a category...</option>
+                        <option value="Print">Print</option>
+                        <option value="3D">3D</option>
+                        <option value="Social">Social</option>
+                        <option value="Branding">Branding</option>
+                        <option value="Web">Web</option>
+                        <option value="Video">Video</option>
+                    </select>
+                </div>
+
+                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Narrative</label><textarea id="proj-narrative" class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md resize-none leading-relaxed" placeholder="Describe the creative intent..." rows="4" required></textarea></div>
             </section>
             
             <section>
@@ -149,13 +162,17 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div class="col-span-2 relative aspect-[16/10] bg-surface-container-low rounded-sm border border-dashed border-outline-variant/50 flex flex-col items-center justify-center group cursor-pointer hover:bg-stone-200 transition-colors">
                         <span class="material-symbols-outlined text-stone-400 mb-2">cloud_upload</span>
-                        <span class="text-[0.6875rem] uppercase tracking-tighter text-stone-500">Drop primary visual here</span>
-                        <input class="absolute inset-0 opacity-0 cursor-pointer" type="file">
+                        <span id="proj-image-label" class="text-[0.6875rem] uppercase tracking-tighter text-stone-500">Drop primary visual here</span>
+                        <input id="proj-image" class="absolute inset-0 opacity-0 cursor-pointer" type="file" accept="image/*" required>
                     </div>
                 </div>
             </section>
 
-            <div class="flex flex-col gap-3 pt-4"><button class="w-full h-12 bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98] transition-transform" type="button" onclick="window.location.hash='dashboard'">Publish Project</button></div>
+            <div class="flex flex-col gap-3 pt-4">
+                <button id="submit-project-btn" class="w-full h-12 bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98] transition-transform" type="submit">Publish Project</button>
+            </div>
+            <!-- Status message container -->
+            <div id="upload-status" class="hidden text-center text-xs font-bold tracking-widest uppercase mt-4"></div>
         </form>
     </div>
 </template>

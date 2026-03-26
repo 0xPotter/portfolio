@@ -223,40 +223,5 @@
 <a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Contact</a>
 </div>
 </footer>
-</body>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const masonryItems = document.querySelectorAll('.masonry-item');
-    
-    const activeClasses = ['text-zinc-900', 'dark:text-zinc-50', 'font-bold', 'border-b', 'border-zinc-900', 'dark:border-zinc-50', 'pb-0.5'];
-    const inactiveClasses = ['text-zinc-500', 'dark:text-zinc-400'];
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => {
-                b.classList.remove(...activeClasses);
-                b.classList.add(...inactiveClasses);
-            });
-            
-            btn.classList.remove(...inactiveClasses);
-            btn.classList.add(...activeClasses);
-            
-            const filterValue = btn.getAttribute('data-filter');
-            
-            masonryItems.forEach(item => {
-                const isMatch = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
-                
-                if (isMatch) {
-                    item.style.display = 'block';
-                    setTimeout(() => item.classList.remove('opacity-0'), 10);
-                } else {
-                    item.classList.add('opacity-0');
-                    setTimeout(() => item.style.display = 'none', 300);
-                }
-            });
-        });
-    });
-});
-</script>
+<script type="module" src="index.js"></script>
 </html>
