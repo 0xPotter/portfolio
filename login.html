@@ -74,7 +74,7 @@
             // The onAuthStateChanged listener will handle the redirect
         } catch (error) {
             console.error("Login failed", error);
-            alert("Acceso denegado. Asegúrate de configurar localhost en Firebase Dominios Autorizados.");
+            alert("Acceso denegado. Asegúrate de configurar este dominio (" + window.location.hostname + ") en Firebase > Authentication > Settings > Dominios Autorizados.");
             loginBtn.innerHTML = originalText;
         }
     });
