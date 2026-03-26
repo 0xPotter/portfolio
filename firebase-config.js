@@ -3,7 +3,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChang
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAXXnf9ffm6o8tmFwV8JyzTxnhOU6lqTV8",
+  apiKey: "AIzaSyAXXnf9fFm6o8tmFwV8JyzTxnh0U6lqTV8",
   authDomain: "portfolio-e7720.firebaseapp.com",
   projectId: "portfolio-e7720",
   storageBucket: "portfolio-e7720.firebasestorage.app",
