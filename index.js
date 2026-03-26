@@ -120,11 +120,9 @@ window.openProjectModal = (id) => {
         galleryContainer.classList.remove('hidden');
         let html = '';
         data.galleryUrls.forEach((url, index) => {
-            const isLastOdd = (index === data.galleryUrls.length - 1) && (data.galleryUrls.length % 2 !== 0);
-            const colClass = isLastOdd ? 'md:col-span-2' : '';
             html += `
-                <div class="w-full h-full overflow-hidden bg-surface-container rounded-sm ${colClass}">
-                    <img class="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-1000 ease-out" src="${url}" alt="Secondary Visual">
+                <div class="w-full h-full flex justify-center bg-transparent relative">
+                    <img class="max-w-full md:max-w-2xl lg:max-w-3xl h-auto object-contain shadow-2xl hover:scale-[1.02] transition-transform duration-1000 ease-out" src="${url}" alt="Secondary Visual">
                 </div>
             `;
         });
