@@ -177,11 +177,37 @@
     </div>
 </template>
 
-<!-- Gallery Placeholder template -->
+<!-- Projects Gallery template -->
 <template id="tpl-gallery">
-    <div class="px-6 py-10 max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center items-center opacity-70">
-        <span class="material-symbols-outlined text-6xl mb-4">grid_on</span>
-        <h2 class="text-3xl font-extrabold tracking-tight">Full Archive Gallery under construction</h2>
+    <div class="px-6 py-10 max-w-7xl mx-auto w-full flex-1">
+        <header class="mb-12 flex justify-between items-end">
+            <div>
+                <span class="text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2 block">System Archive</span>
+                <h2 class="text-[1.75rem] font-bold tracking-tight text-primary leading-none">Projects</h2>
+            </div>
+            <a href="#add-project" class="bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity px-6 py-3 flex items-center gap-2"><span class="material-symbols-outlined text-[16px]">add</span>New Project</a>
+        </header>
+
+        <section class="bg-white border border-stone-100">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-stone-100 bg-stone-50">
+                            <th class="py-4 px-6 text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant w-24">Media</th>
+                            <th class="py-4 px-6 text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant">Title</th>
+                            <th class="py-4 px-6 text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant hidden md:table-cell">Category</th>
+                            <th class="py-4 px-6 text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant hidden sm:table-cell">Status</th>
+                            <th class="py-4 px-6 text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projects-table-body" class="divide-y divide-stone-100">
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-sm text-stone-400 font-bold uppercase tracking-widest">Loading archive...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 </template>
 

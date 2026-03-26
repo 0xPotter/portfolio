@@ -1,4 +1,4 @@
-import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp } from './firebase-config.js';
+import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp, doc, deleteDoc, updateDoc, getDocs, orderBy, query, getDoc } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appRoot = document.getElementById('app-root');
@@ -43,13 +43,96 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function initRouteLogic(hash) {
+    function initRouteLogic(hash, queryString) {
+        if (hash === 'gallery') {
+            const tbody = document.getElementById('projects-table-body');
+            if(tbody) {
+                const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+                getDocs(q).then(snapshot => {
+                    if(snapshot.empty) {
+                        tbody.innerHTML = `<tr><td colspan="5" class="py-12 text-center text-sm text-stone-400 font-bold uppercase tracking-widest">No projects found.</td></tr>`;
+                        return;
+                    }
+                    let html = '';
+                    snapshot.forEach(docSnap => {
+                        const data = docSnap.data();
+                        const id = docSnap.id;
+                        const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                        html += `
+                        <tr class="group hover:bg-stone-50 transition-colors">
+                            <td class="py-4 px-6 border-b border-stone-100">
+                                <div class="w-16 h-10 bg-stone-200 rounded-sm overflow-hidden bg-cover bg-center" style="background-image: url('${data.imageUrl}')"></div>
+                            </td>
+                            <td class="py-4 px-6 border-b border-stone-100">
+                                <p class="font-bold text-sm tracking-tight">${data.title}</p>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-400 mt-1">${date}</p>
+                            </td>
+                            <td class="py-4 px-6 border-b border-stone-100 hidden md:table-cell">
+                                <span class="bg-surface-container-high px-2 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">${data.category}</span>
+                            </td>
+                            <td class="py-4 px-6 border-b border-stone-100 hidden sm:table-cell">
+                                <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full ${data.published ? 'bg-green-500' : 'bg-stone-300'}"></span><span class="text-[10px] uppercase font-bold tracking-widest text-stone-500">${data.published ? 'Published' : 'Draft'}</span></div>
+                            </td>
+                            <td class="py-4 px-6 border-b border-stone-100 text-right">
+                                <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onclick="window.location.hash='add-project?id=${id}'" class="text-stone-400 hover:text-black transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                                    <button data-delete-id="${id}" class="delete-btn text-stone-400 hover:text-red-600 transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                                </div>
+                            </td>
+                        </tr>`;
+                    });
+                    tbody.innerHTML = html;
+
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', async (e) => {
+                            const id = e.currentTarget.getAttribute('data-delete-id');
+                            if(confirm("Are you sure you want to permanently delete this project?")) {
+                                try {
+                                    await deleteDoc(doc(db, 'projects', id));
+                                    initRouteLogic('gallery'); // refresh table
+                                } catch(err) {
+                                    alert("Error deleting: " + err.message);
+                                }
+                            }
+                        });
+                    });
+                });
+            }
+        }
         if (hash === 'add-project') {
             const form = document.getElementById('add-project-form');
             const fileInput = document.getElementById('proj-image');
             const fileLabel = document.getElementById('proj-image-label');
             const statusDiv = document.getElementById('upload-status');
             const submitBtn = document.getElementById('submit-project-btn');
+
+            let editingId = null;
+            if (queryString && queryString.startsWith('id=')) {
+                editingId = queryString.split('=')[1];
+            }
+
+            if (editingId) {
+                // Populate form for editing
+                document.querySelector('h2').textContent = 'Edit Project';
+                submitBtn.textContent = 'Update Project';
+                getDoc(doc(db, 'projects', editingId)).then(docSnap => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        document.getElementById('proj-title').value = data.title || '';
+                        document.getElementById('proj-category').value = data.category || '';
+                        document.getElementById('proj-narrative').value = data.narrative || '';
+                        if(data.imageUrl) {
+                            fileInput.parentElement.style.backgroundImage = `url(${data.imageUrl})`;
+                            fileInput.parentElement.style.backgroundSize = 'cover';
+                            fileInput.parentElement.style.backgroundPosition = 'center';
+                            fileInput.removeAttribute('required');
+                            fileLabel.textContent = 'Keep existing or drop new visual';
+                        }
+                    }
+                });
+            } else {
+                fileInput.setAttribute('required', 'required');
+            }
 
             if (fileInput) {
                 const dropZone = fileInput.parentElement;
@@ -88,25 +171,41 @@ document.addEventListener('DOMContentLoaded', () => {
                         const narrative = document.getElementById('proj-narrative').value;
                         const file = fileInput.files[0];
 
-                        // 1. Upload Image
-                        statusDiv.textContent = 'Uploading imagery...';
-                        const imageRef = ref(storage, `projects/${Date.now()}_${file.name}`);
-                        await uploadBytes(imageRef, file);
-                        const imageUrl = await getDownloadURL(imageRef);
+                        // 1. Upload Image (only if a new one is selected)
+                        let imageUrl = null;
+                        if (fileInput.files.length > 0) {
+                            statusDiv.textContent = 'Uploading imagery...';
+                            const file = fileInput.files[0];
+                            const imageRef = ref(storage, `projects/${Date.now()}_${file.name}`);
+                            await uploadBytes(imageRef, file);
+                            imageUrl = await getDownloadURL(imageRef);
+                        }
 
                         // 2. Save Document
                         statusDiv.textContent = 'Saving narrative...';
-                        await addDoc(collection(db, 'projects'), {
-                            title,
-                            category,
-                            narrative,
-                            imageUrl,
-                            createdAt: serverTimestamp(),
-                            published: true
-                        });
-
-                        statusDiv.classList.replace('text-stone-500', 'text-green-600');
-                        statusDiv.textContent = 'Project successfully published!';
+                        if (editingId) {
+                            const updateData = {
+                                title,
+                                category,
+                                narrative
+                            };
+                            if (imageUrl) updateData.imageUrl = imageUrl;
+                            
+                            await updateDoc(doc(db, 'projects', editingId), updateData);
+                            statusDiv.classList.replace('text-stone-500', 'text-green-600');
+                            statusDiv.textContent = 'Project successfully updated!';
+                        } else {
+                            await addDoc(collection(db, 'projects'), {
+                                title,
+                                category,
+                                narrative,
+                                imageUrl,
+                                createdAt: serverTimestamp(),
+                                published: true
+                            });
+                            statusDiv.classList.replace('text-stone-500', 'text-green-600');
+                            statusDiv.textContent = 'Project successfully published!';
+                        }
                         
                         // Reset form and return to dashboard
                         form.reset();
@@ -129,7 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPage() {
-        let hash = window.location.hash.substring(1);
+        let rawHash = window.location.hash.substring(1);
+        let [hash, queryString] = rawHash.split('?');
         if (!hash || !routes[hash]) {
             hash = 'dashboard';
         }
@@ -145,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateActiveNav(hash);
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            initRouteLogic(hash);
+            initRouteLogic(hash, queryString);
 
             // Auto close sidebar on mobile when navigating
             if (window.innerWidth < 768) {
