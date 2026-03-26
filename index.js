@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const heroCols = document.querySelectorAll('.animate-float, .animate-float-reverse');
     
     try {
+        // Avoid requiring a composite index by fetching all and filtering locally
         const q = query(
             collection(db, 'projects'),
-            where('published', '==', true),
             orderBy('createdAt', 'desc')
         );
         const querySnapshot = await getDocs(q);
@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         querySnapshot.forEach((doc) => {
             const data = doc.data();
+            if (!data.published) return; // Client-side filter
+            
             if(data.imageUrl) allImages.push(data.imageUrl);
 
             let catLabel = data.category ? data.category.toLowerCase() : 'all';

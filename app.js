@@ -52,11 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const submitBtn = document.getElementById('submit-project-btn');
 
             if (fileInput) {
+                const dropZone = fileInput.parentElement;
                 fileInput.addEventListener('change', (e) => {
                     if (e.target.files.length > 0) {
-                        fileLabel.textContent = e.target.files[0].name;
+                        const file = e.target.files[0];
+                        fileLabel.textContent = file.name;
+                        
+                        // Show image preview
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            dropZone.style.backgroundImage = `url(${event.target.result})`;
+                            dropZone.style.backgroundSize = 'cover';
+                            dropZone.style.backgroundPosition = 'center';
+                        };
+                        reader.readAsDataURL(file);
                     } else {
                         fileLabel.textContent = 'Drop primary visual here';
+                        dropZone.style.backgroundImage = 'none';
                     }
                 });
             }
@@ -99,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Reset form and return to dashboard
                         form.reset();
                         fileLabel.textContent = 'Drop primary visual here';
+                        fileInput.parentElement.style.backgroundImage = 'none';
                         setTimeout(() => {
                             window.location.hash = 'dashboard';
                         }, 1500);
