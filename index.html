@@ -1,0 +1,262 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>GALLERY | Monograph</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed-dim": "#acabab",
+              "on-secondary": "#ffffff",
+              "outline-variant": "#c6c6c6",
+              "on-surface-variant": "#474747",
+              "primary-container": "#3b3b3b",
+              "background": "#f9f9f9",
+              "surface-variant": "#e2e2e2",
+              "tertiary-fixed": "#5d5f5f",
+              "on-primary-fixed-variant": "#e2e2e2",
+              "on-secondary-fixed": "#1b1c1c",
+              "inverse-primary": "#c6c6c6",
+              "surface-container": "#eeeeee",
+              "on-background": "#1a1c1c",
+              "inverse-on-surface": "#f0f1f1",
+              "surface-bright": "#f9f9f9",
+              "on-error": "#ffffff",
+              "tertiary-fixed-dim": "#454747",
+              "outline": "#777777",
+              "tertiary": "#3a3c3c",
+              "on-primary-container": "#ffffff",
+              "on-error-container": "#410002",
+              "on-surface": "#1a1c1c",
+              "surface-tint": "#5e5e5e",
+              "secondary": "#5e5e5e",
+              "secondary-fixed": "#c7c6c6",
+              "surface-container-highest": "#e2e2e2",
+              "tertiary-container": "#737575",
+              "on-tertiary-fixed-variant": "#e2e2e2",
+              "error": "#ba1a1a",
+              "primary-fixed-dim": "#474747",
+              "surface": "#f9f9f9",
+              "on-secondary-fixed-variant": "#3b3b3c",
+              "on-tertiary": "#e2e2e2",
+              "on-secondary-container": "#1b1c1c",
+              "surface-dim": "#dadada",
+              "primary-fixed": "#5e5e5e",
+              "secondary-container": "#d5d4d4",
+              "surface-container-low": "#f3f3f4",
+              "primary": "#000000",
+              "on-primary": "#e2e2e2",
+              "on-tertiary-fixed": "#ffffff",
+              "on-tertiary-container": "#ffffff",
+              "surface-container-high": "#e8e8e8",
+              "on-primary-fixed": "#ffffff",
+              "surface-container-lowest": "#ffffff",
+              "inverse-surface": "#2f3131",
+              "error-container": "#ffdad6"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"],
+              "serif": ["Playfair Display", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            animation: {
+              'float': 'float 20s linear infinite',
+              'float-reverse': 'float-reverse 25s linear infinite',
+            },
+            keyframes: {
+              float: {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(-50%)' }
+              },
+              'float-reverse': {
+                '0%': { transform: 'translateY(-50%)' },
+                '100%': { transform: 'translateY(0)' }
+              }
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 18px;
+        }
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 0.5rem;
+        }
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+        @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 0.5rem;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-background antialiased selection:bg-primary selection:text-on-primary" data-mode="connect">
+<section class="relative h-[707px] w-full overflow-hidden bg-black flex items-center justify-center" data-stitch-vh="h-[707px]===h-[80vh]">
+<div class="absolute inset-0 z-0 flex gap-4 opacity-40 blur-sm scale-110">
+<div class="flex-1 flex flex-col gap-4 animate-float">
+<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzaY0ofRRbTFqwFLS3oNRkk5K08vWFX1G0OzQl7aqgy46zJovwT6bPEmxfiZc4aFRCmFdFlwxxCl5th2-N-UddSJwraRzN1QGwleuqJQ2KYowRJ7rcxJvzU37HEDi3mNSefVJGlEf3SnzB6CKee2SkyI0zek0XCYEwVaB8cSzxmp-9Tk9TgwzzGoXU4gWK-3qG_RrSr7fLLrUCUWAABuiGIK76LyKCCv2bIMF94S1ZafEsTmeFGaRZk9gJiSJy92hJcmkFzFAZ7v7w">
+<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG6n8q52nBXCHYfwwP4gPdQ3Gna2a_ly67jIDUShoagJnywFSyK3ArFkcBNdGm-DqAkBQwJN7_1uZX2py8xBc8ZGy2V36SljwExIOFvtgchnoBrP2LGQZjMTye-JU4t9KLCL2FKqxYcptEUwt1uXpNa1cWCI1eDUYFY2oj12YrHYg6xI_xTlNI20a39iKkQLG-9AJL2VH6avlsginlYKex2aet44fPTC3qFM-4eCyf7lCkxaMTLM0lGtNe29Ed0LDJnOJ41uWW-fz2">
+<img class="w-full aspect-[4/3] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjgW6anXPMPLOdCTer5SKj-gV-6lysRUpFM1JziZ7i1tHL_waErO5OG6NZimTvZhqmhum_2MzV4wLhQk3lPv3KaWApV4NU3G94rhCZEYoLcjwhQp-d08AIMgI3iLy207w6rYDSU8yie1KGgvBHr23-26eYZe48vd-bbc_59axDl2MAgsfEu9NRxPyVr42RbAfu-xOOXA1wkptmecLPRh7bUvJjTPwJ4fzKTqWgLZi8fCg9J3JUCeAEUj9gaQ9yRw1PW8-AnMGw2NcT">
+<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzaY0ofRRbTFqwFLS3oNRkk5K08vWFX1G0OzQl7aqgy46zJovwT6bPEmxfiZc4aFRCmFdFlwxxCl5th2-N-UddSJwraRzN1QGwleuqJQ2KYowRJ7rcxJvzU37HEDi3mNSefVJGlEf3SnzB6CKee2SkyI0zek0XCYEwVaB8cSzxmp-9Tk9TgwzzGoXU4gWK-3qG_RrSr7fLLrUCUWAABuiGIK76LyKCCv2bIMF94S1ZafEsTmeFGaRZk9gJiSJy92hJcmkFzFAZ7v7w">
+</div>
+<div class="flex-1 flex flex-col gap-4 animate-float-reverse">
+<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFnLm4TwVIevfiEW0uuo0vyK2_WaoNtmHeLlfQqGUj3NtjxApo6-x8U87p1dYfjRP2Btgp36td9ZWD9EyJnQ8n2bSaad8ZI7Wt-s_2xL-w1Hu9liM8PKpsvMJnR-VBPgLOIUiVziaI16r9CaVMRN-dy2L4QgrB6qXLovOcE0AblJ6jDtrHSjrpVrbqiVCaU_d2HdJ0APyFp-z22H3xS12WLLzDY1zB8J-SpDdJyasKEVO2aS4Y9a-svmR-QafI7hPiemAzSJCN7eU2">
+<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZGZxBx5D68CbRsdUplnpFv9peVRMC1XWgSoh3V8s9quPMUlLkVlIgvmvQxT7r72SuPxzi7mCmgyMhq78vc5vCX1h0EP6zD5l8TQ5tixw-B7koWmCbHHLfrfLzWXRBwzpfQiqhJukt63M6ANnluTTjqEHH0DLQ7GRT3V61V_QvQiXCcsrCwGUFsHa4TDgd9J9M8ZmDRTKz8AxCnj_-9pWziIMd4ugu99_r1MY6x06stQXgbMFQ-rvi5NpvGXtQPlfmvFAEBksFtKB4">
+<img class="w-full aspect-[4/5] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPOc9efvSCzqyLdgCxWkUYTAALY5detG9QqHgf76HeeDf4E4wQQ3JqmmFm8INirtt1rW3A5r4Q46BtDUD5Rx5WxPBqIcfHSdpuJnXNNcF8bVTP4uNYjESrqIs1ARZJ9rcjhKjsUTyXqqVl68c4f3KcxLWXTYQII-FWB9j9vjeNHTVvAigkEnx03Mn1xwHd5GqcBOnMScZucrEdzNFMoZBqap6nKceytL5heibyQsyfm6djxqvt5azvkhXXNOxjvb9aTGDAwECpDK-Z">
+<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFnLm4TwVIevfiEW0uuo0vyK2_WaoNtmHeLlfQqGUj3NtjxApo6-x8U87p1dYfjRP2Btgp36td9ZWD9EyJnQ8n2bSaad8ZI7Wt-s_2xL-w1Hu9liM8PKpsvMJnR-VBPgLOIUiVziaI16r9CaVMRN-dy2L4QgrB6qXLovOcE0AblJ6jDtrHSjrpVrbqiVCaU_d2HdJ0APyFp-z22H3xS12WLLzDY1zB8J-SpDdJyasKEVO2aS4Y9a-svmR-QafI7hPiemAzSJCN7eU2">
+</div>
+<div class="hidden md:flex flex-1 flex flex-col gap-4 animate-float">
+<img class="w-full aspect-[16/9] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP8yX33zRvMA-kRdAfVYFgeE-2SBo-9dZVKxROrRx7-iZMe6iyjIO9Wtv4xFbUSSFJa1QRH70MZ-MSPrkxnnVIzkL8M6NOsbu0Wm50O7NkR4OaYdhWytiL06PGJn-qpX58DOlnJUaxcNWgq1-qbK_WGQxvusED1bXrQD_gUJtPza587zitKUH2y706SvwzC2Bfbm0tvKp7f2JHF3Ji4opJPlcmYeySM3OMo42aVwGST4R8cjnqq1bcbiNo9ioJCSRigNCLLVmBYlz6">
+<img class="w-full aspect-[4/3] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvJqwlc0Z4l9Pqn24aUExgyL2tg2aP_F-TRnk61He0OWm75Cf2nbxoukrYYg9PQqXrfb-mrJ7wM6rjNB8GwifCkQvQ-An6NqIpwQsGHeuNKbxrXJ2hTRFc9N54niJMfGUbgPD6NNp_LqC_a4P5Lc0za5W-gegx-hCZlZFgEfb8dGOEh9O3FMiPJp6vALlv9oGfnnuuiJfqaG35jnkeD9hrvhzMjmPHpR_dc2RCIj8eLgveSZ-LAck_vyQO0uStLhiR-U2pa3lV_yk4">
+<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8mmaeiA5gtKXd0xSejaYuQtcXsqzhcVc2mA0501m8vxg37GzKKIpGxxQdiRZOexBQsdBcpvYWAwZqDqP-Lm5l2MsTzHyksW7ZyqH8SFCMbakVaqinlS6_6oMTMQ43mffiHVPlZchzKX1xsDhz97WiPC3qPA35PQKd9ZMijkFSInpfWdZC8b47yFSmILS2JrE0ZLcPJvXMbxT8GdT1S2u-8xh_4NmwcxzTAq6cL88hb0-1mEaNkRFBwj6kWe94PhErB6I9AvZk2_NI">
+<img class="w-full aspect-[16/9] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP8yX33zRvMA-kRdAfVYFgeE-2SBo-9dZVKxROrRx7-iZMe6iyjIO9Wtv4xFbUSSFJa1QRH70MZ-MSPrkxnnVIzkL8M6NOsbu0Wm50O7NkR4OaYdhWytiL06PGJn-qpX58DOlnJUaxcNWgq1-qbK_WGQxvusED1bXrQD_gUJtPza587zitKUH2y706SvwzC2Bfbm0tvKp7f2JHF3Ji4opJPlcmYeySM3OMo42aVwGST4R8cjnqq1bcbiNo9ioJCSRigNCLLVmBYlz6">
+</div>
+</div>
+<div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
+<h1 class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold">Portafolio</h1>
+<p class="mt-6 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
+<div class="absolute bottom-12 animate-bounce opacity-40">
+<span class="material-symbols-outlined text-4xl" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+</div>
+</div>
+</section>
+<!-- Top Navigation -->
+<nav class="sticky top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex justify-between items-center px-6 py-3 no-line-rule tonal-shift-only flat no shadows">
+<div class="flex items-center gap-8">
+<span class="text-sm font-bold tracking-tighter text-zinc-900 dark:text-zinc-50">Proyectos</span>
+<div class="hidden md:flex gap-6 items-center" id="filter-nav">
+<button class="filter-btn active font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-900 dark:text-zinc-50 font-bold border-b border-zinc-900 dark:border-zinc-50 pb-0.5 hover:opacity-70 transition-all duration-200" data-filter="all">Todo</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="social">Social</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="branding">Branding</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="print">print</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="3d">3D</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="web">Web</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-[11px] uppercase tracking-widest w-32 placeholder:text-outline-variant" placeholder="Explore projects..." type="text">
+</div>
+
+</div>
+</nav>
+<!-- Main Content: Masonry Grid -->
+<main class="pt-12 px-4 md:px-8 pb-12">
+<div class="masonry-grid">
+<!-- Item 1: Print Editorial -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="print">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="minimalist editorial magazine layout" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzaY0ofRRbTFqwFLS3oNRkk5K08vWFX1G0OzQl7aqgy46zJovwT6bPEmxfiZc4aFRCmFdFlwxxCl5th2-N-UddSJwraRzN1QGwleuqJQ2KYowRJ7rcxJvzU37HEDi3mNSefVJGlEf3SnzB6CKee2SkyI0zek0XCYEwVaB8cSzxmp-9Tk9TgwzzGoXU4gWK-3qG_RrSr7fLLrUCUWAABuiGIK76LyKCCv2bIMF94S1ZafEsTmeFGaRZk9gJiSJy92hJcmkFzFAZ7v7w">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Kinfolk Editorial / Print</p>
+</div>
+</div>
+<!-- Item 2: Social Media (Interface) -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="social">
+<img class="w-full h-auto hover:opacity-90 transition-all duration-500" data-alt="social media interface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFnLm4TwVIevfiEW0uuo0vyK2_WaoNtmHeLlfQqGUj3NtjxApo6-x8U87p1dYfjRP2Btgp36td9ZWD9EyJnQ8n2bSaad8ZI7Wt-s_2xL-w1Hu9liM8PKpsvMJnR-VBPgLOIUiVziaI16r9CaVMRN-dy2L4QgrB6qXLovOcE0AblJ6jDtrHSjrpVrbqiVCaU_d2HdJ0APyFp-z22H3xS12WLLzDY1zB8J-SpDdJyasKEVO2aS4Y9a-svmR-QafI7hPiemAzSJCN7eU2">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Visual Feed / Social</p>
+</div>
+</div>
+<!-- Item 3: Web (Cinematic) -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="web">
+<img class="w-full h-auto hover:opacity-90 transition-all duration-500" data-alt="cinematic lighting in a gallery" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWrn1ysQnMjOTcT8T3YrPhTkoZh67CZtIGwtJ2MYbVDybrlY_rQ2pgjrucEHDY6tegY_KSv7iBDm3EKKBGDMD0RSVAB3ILSs0ODbCBiNZGQwwdr8qmVVM7sVnWXc9fBhSgsZbRSSdWzx6Qqn3o-Cq6uWpFoD2RhO4eDNAQwGA-GCVFE_ngp7UKblGhRg7ufaAP-2Kf3ktHfhGs1Vl42WGG9Y9Wkt6UfdAz1bkNSvqDs0s7Iex9ZGhOWRD7P3wnRz72I93A8MY9WOoJ">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6 backdrop-blur-[2px]">
+<span class="material-symbols-outlined text-white text-4xl mb-4" data-icon="play_circle">play_circle</span>
+<p class="absolute bottom-6 left-6 text-[10px] tracking-widest uppercase text-white font-medium">Interactive Gallery / Web</p>
+</div>
+</div>
+<!-- Item 4: 3D Fluidity -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="3d">
+<img class="w-full h-auto hover:opacity-90 transition-all duration-500" data-alt="3d flowing liquid ribbons" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG6n8q52nBXCHYfwwP4gPdQ3Gna2a_ly67jIDUShoagJnywFSyK3ArFkcBNdGm-DqAkBQwJN7_1uZX2py8xBc8ZGy2V36SljwExIOFvtgchnoBrP2LGQZjMTye-JU4t9KLCL2FKqxYcptEUwt1uXpNa1cWCI1eDUYFY2oj12YrHYg6xI_xTlNI20a39iKkQLG-9AJL2VH6avlsginlYKex2aet44fPTC3qFM-4eCyf7lCkxaMTLM0lGtNe29Ed0LDJnOJ41uWW-fz2">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Fluidity Study / 3D</p>
+</div>
+</div>
+<!-- Item 5: Branding Stationery -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="branding">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="minimalist brand identity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjgW6anXPMPLOdCTer5SKj-gV-6lysRUpFM1JziZ7i1tHL_waErO5OG6NZimTvZhqmhum_2MzV4wLhQk3lPv3KaWApV4NU3G94rhCZEYoLcjwhQp-d08AIMgI3iLy207w6rYDSU8yie1KGgvBHr23-26eYZe48vd-bbc_59axDl2MAgsfEu9NRxPyVr42RbAfu-xOOXA1wkptmecLPRh7bUvJjTPwJ4fzKTqWgLZi8fCg9J3JUCeAEUj9gaQ9yRw1PW8-AnMGw2NcT">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Archetype Studio / Branding</p>
+</div>
+</div>
+<!-- Item 6: Brutalist Print -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="print">
+<img class="w-full h-auto grayscale hover:grayscale-0 transition-all duration-700 ease-out" data-alt="brutalist architecture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZGZxBx5D68CbRsdUplnpFv9peVRMC1XWgSoh3V8s9quPMUlLkVlIgvmvQxT7r72SuPxzi7mCmgyMhq78vc5vCX1h0EP6zD5l8TQ5tixw-B7koWmCbHHLfrfLzWXRBwzpfQiqhJukt63M6ANnluTTjqEHH0DLQ7GRT3V61V_QvQiXCcsrCwGUFsHa4TDgd9J9M8ZmDRTKz8AxCnj_-9pWziIMd4ugu99_r1MY6x06stQXgbMFQ-rvi5NpvGXtQPlfmvFAEBksFtKB4">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Concrete Poetry / Print</p>
+</div>
+</div>
+<!-- Item 7: 3D Object -->
+<div class="masonry-item group relative overflow-hidden bg-surface-container transition-opacity duration-500" data-category="3d">
+<img class="w-full h-auto hover:opacity-90 transition-all duration-500" data-alt="glass sphere render" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPOc9efvSCzqyLdgCxWkUYTAALY5detG9QqHgf76HeeDf4E4wQQ3JqmmFm8INirtt1rW3A5r4Q46BtDUD5Rx5WxPBqIcfHSdpuJnXNNcF8bVTP4uNYjESrqIs1ARZJ9rcjhKjsUTyXqqVl68c4f3KcxLWXTYQII-FWB9j9vjeNHTVvAigkEnx03Mn1xwHd5GqcBOnMScZucrEdzNFMoZBqap6nKceytL5heibyQsyfm6djxqvt5azvkhXXNOxjvb9aTGDAwECpDK-Z">
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
+<p class="text-[10px] tracking-widest uppercase text-white font-medium">Prism Object / 3D</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 mt-24 bg-zinc-50 dark:bg-zinc-900 flex flex-col md:flex-row justify-between items-center px-8 max-w-full gap-4 tonal-shift from surface to surface-container-low flat">
+<div class="hidden">GALLERY</div> <!-- style_brand_logo: hidden -->
+<span class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500">
+            © 2024 Gallery Monograph
+        </span>
+<div class="flex gap-8">
+<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Archive</a>
+<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-900 dark:text-zinc-100 hover:opacity-70 transition-opacity font-bold" href="login.html">Login</a>
+<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Contact</a>
+</div>
+</footer>
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const masonryItems = document.querySelectorAll('.masonry-item');
+    
+    const activeClasses = ['text-zinc-900', 'dark:text-zinc-50', 'font-bold', 'border-b', 'border-zinc-900', 'dark:border-zinc-50', 'pb-0.5'];
+    const inactiveClasses = ['text-zinc-500', 'dark:text-zinc-400'];
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => {
+                b.classList.remove(...activeClasses);
+                b.classList.add(...inactiveClasses);
+            });
+            
+            btn.classList.remove(...inactiveClasses);
+            btn.classList.add(...activeClasses);
+            
+            const filterValue = btn.getAttribute('data-filter');
+            
+            masonryItems.forEach(item => {
+                const isMatch = filterValue === 'all' || item.getAttribute('data-category') === filterValue;
+                
+                if (isMatch) {
+                    item.style.display = 'block';
+                    setTimeout(() => item.classList.remove('opacity-0'), 10);
+                } else {
+                    item.classList.add('opacity-0');
+                    setTimeout(() => item.style.display = 'none', 300);
+                }
+            });
+        });
+    });
+});
+</script>
+</html>

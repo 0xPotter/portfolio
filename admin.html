@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Archive Admin | Monograph</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#000000",
+              "on-primary": "#e2e2e2",
+              "surface": "#ffffff",
+              "surface-container": "#eeeeee",
+              "surface-container-low": "#f3f3f4",
+              "surface-container-lowest": "#ffffff",
+              "outline-variant": "#c6c6c6",
+              "on-surface": "#1a1c1c",
+              "on-surface-variant": "#474747",
+              "secondary": "#5e5e5e"
+            },
+            fontFamily: {
+              "inter": ["Inter", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-inter text-on-surface antialiased bg-stone-50 text-stone-900 h-screen overflow-hidden">
+
+<!-- Global Navigation Area -->
+<header class="fixed top-0 w-full z-40 bg-white/70 backdrop-blur-xl shadow-sm h-16 flex items-center justify-between px-6">
+    <div class="flex items-center gap-4">
+        <button id="menu-toggle" class="hover:opacity-80 transition-opacity scale-95 active:scale-90">
+            <span class="material-symbols-outlined text-black">menu</span>
+        </button>
+        <h1 class="text-lg font-bold tracking-tighter text-black tracking-tight"><a href="index.html">GALLERY_ADMIN</a></h1>
+    </div>
+    <div class="flex items-center gap-4">
+        <a href="index.html" class="text-xs uppercase tracking-widest font-bold">Public View</a>
+        <div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-stone-200">
+            <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3">
+        </div>
+    </div>
+</header>
+
+<aside id="sidebar" class="fixed left-0 top-0 h-full z-50 flex flex-col pt-20 bg-white w-64 border-r border-stone-100 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+    <div class="px-6 mb-10">
+        <h2 class="text-xl font-black text-black text-sm uppercase tracking-widest">ARCHIVE</h2>
+    </div>
+    <nav class="flex-1">
+        <ul class="space-y-1">
+            <li><a href="#dashboard" data-path="dashboard" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a></li>
+            <li><a href="#gallery" data-path="gallery" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">grid_view</span><span>Projects</span></a></li>
+            <li><a href="#add-project" data-path="add-project" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">add</span><span>Add New</span></a></li>
+        </ul>
+    </nav>
+</aside>
+
+<!-- Router View -->
+<main id="app-root" class="pt-16 h-screen flex flex-col md:pl-64 overflow-y-auto w-full"></main>
+
+<!-- Dashboard Template -->
+<template id="tpl-dashboard">
+    <div class="px-6 py-10 max-w-7xl mx-auto w-full flex-1">
+        <header class="mb-12">
+            <p class="text-[10px] tracking-widest uppercase text-on-surface-variant font-bold mb-2">System Overview</p>
+            <h2 class="text-3xl font-extrabold tracking-tight text-primary leading-tight">Curating the invisible.</h2>
+        </header>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="bg-surface-container-lowest p-8 border-l border-primary shadow-sm group hover:bg-stone-50 transition-all duration-300">
+                <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">photo_library</span></div>
+                <div class="text-4xl font-black mb-1">128</div>
+                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Live Gallery</div>
+            </div>
+            <div class="bg-surface-container-low p-8 shadow-sm group hover:bg-stone-50 transition-all duration-300">
+                <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">visibility</span></div>
+                <div class="text-4xl font-black mb-1">14.2K</div>
+                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Impressions</div>
+            </div>
+        </section>
+        <section>
+            <div class="flex justify-between items-end mb-8">
+                <div><h3 class="text-xl font-bold tracking-tight">Recent Entries</h3><div class="w-12 h-1 bg-primary mt-2"></div></div>
+                <a href="#gallery" class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">View Archive</a>
+            </div>
+            <div class="space-y-4">
+                <div class="group bg-white flex flex-col md:flex-row items-stretch md:items-center overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer">
+                    <div class="w-full md:w-32 h-40 md:h-24 overflow-hidden shrink-0"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgPMihwmoThvZXCgaZIPdkxDLFMIhrX8bKjVDDyO1RrHcNytNhKNZ1U55YKQr6slpUDkWUdy9m7aT_3V0e7lVLc7O3uGc-_NuJSyQoYk3V7pCyjmKgYxFnap35-Tg_8FLY5WtwxqbuIBa-LYoHYaYzZoO1U9yaxoCcGrMer_w73qHuNUwhOMOn99oGthTC8DuqaDlC4o-zYEaLI52o278yxRs27TqEQx15ZE1OYbKlU19_iwWnhAdUQNB99KjI_0MmPbJZfUlGq8N9"></div>
+                    <div class="p-6 flex-1 flex flex-col md:flex-row justify-between md:items-center">
+                        <div><span class="text-[10px] uppercase tracking-widest text-stone-400 font-bold">Branding / 2024</span><h4 class="text-lg font-bold tracking-tight mt-1">Ethereal Motion Identity</h4></div>
+                        <div class="flex items-center gap-6 mt-4 md:mt-0">
+                            <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-stone-300"></span><span class="text-[10px] uppercase font-bold tracking-widest text-stone-500">Draft</span></div>
+                            <div class="flex items-center gap-2"><button class="bg-primary text-white px-4 py-2 text-[10px] uppercase tracking-widest font-bold">Publish</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <a href="#add-project" class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white flex items-center justify-center rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all z-40"><span class="material-symbols-outlined">add</span></a>
+    </div>
+</template>
+
+<!-- Add Project Template -->
+<template id="tpl-add-project">
+    <div class="px-6 py-10 max-w-2xl mx-auto w-full flex-1">
+        <header class="mb-12">
+            <span class="text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2 block">Curation Hub</span>
+            <h2 class="text-[1.75rem] font-bold tracking-tight text-primary leading-none">Add New Project</h2>
+        </header>
+        <form class="space-y-12 pb-24">
+            <section class="space-y-8">
+                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Title</label><input class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md" placeholder="e.g. Kinetic Sculptures 01" type="text" required></div>
+                <div class="group"><label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Project Narrative</label><textarea class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md resize-none leading-relaxed" placeholder="Describe the creative intent..." rows="4" required></textarea></div>
+            </section>
+            
+            <section>
+                <label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-4">Hero Imagery</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="col-span-2 relative aspect-[16/10] bg-surface-container-low rounded-sm border border-dashed border-outline-variant/50 flex flex-col items-center justify-center group cursor-pointer hover:bg-stone-200 transition-colors">
+                        <span class="material-symbols-outlined text-stone-400 mb-2">cloud_upload</span>
+                        <span class="text-[0.6875rem] uppercase tracking-tighter text-stone-500">Drop primary visual here</span>
+                        <input class="absolute inset-0 opacity-0 cursor-pointer" type="file">
+                    </div>
+                </div>
+            </section>
+
+            <div class="flex flex-col gap-3 pt-4"><button class="w-full h-12 bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98] transition-transform" type="button" onclick="window.location.hash='dashboard'">Publish Project</button></div>
+        </form>
+    </div>
+</template>
+
+<!-- Gallery Placeholder template -->
+<template id="tpl-gallery">
+    <div class="px-6 py-10 max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center items-center opacity-70">
+        <span class="material-symbols-outlined text-6xl mb-4">grid_on</span>
+        <h2 class="text-3xl font-extrabold tracking-tight">Full Archive Gallery under construction</h2>
+    </div>
+</template>
+
+<template id="tpl-home">
+    <div class="px-6 py-10 max-w-7xl mx-auto w-full flex-1 flex flex-col justify-center items-center">
+        <h2 class="text-3xl font-extrabold tracking-tight">Loading External Index...</h2>
+        <script>window.location.href = 'index.html';</script>
+    </div>
+</template>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
