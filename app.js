@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             } else {
-                fileInput.setAttribute('required', 'required');
+                // Don't enforce required on file input — user may only paste a video URL
             }
 
             if (galleryInput) {
