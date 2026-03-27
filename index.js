@@ -122,7 +122,7 @@ window.openProjectModal = (id) => {
         data.galleryUrls.forEach((url, index) => {
             html += `
                 <div class="w-full h-full flex justify-center bg-transparent relative">
-                    <img class="max-w-full md:max-w-2xl lg:max-w-3xl h-auto object-contain shadow-2xl hover:scale-[1.02] transition-transform duration-1000 ease-out" src="${url}" alt="Secondary Visual">
+                    <img class="max-w-full md:max-w-md lg:max-w-lg h-auto object-contain shadow-2xl rounded-lg hover:scale-[1.02] transition-transform duration-1000 ease-out" src="${url}" alt="Secondary Visual">
                 </div>
             `;
         });
