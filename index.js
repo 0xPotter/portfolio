@@ -39,14 +39,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (data.imageUrl) {
                 gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}">`;
             } else if (data.videoUrl) {
-                // Try to extract a YouTube thumbnail
                 const ytMatch = data.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
-                if (ytMatch) {
-                    gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg">`;
-                } else {
-                    // Generic video placeholder
-                    gridVisual = `<div class="w-full aspect-video bg-zinc-900 flex items-center justify-center"><span class="material-symbols-outlined text-white text-5xl opacity-60">play_circle</span></div>`;
-                }
+                const viMatch = data.videoUrl.match(/vimeo\.com\/(\d+)/);
+                let embedSrc = '';
+                if (ytMatch) embedSrc = `https://www.youtube.com/embed/${ytMatch[1]}`;
+                else if (viMatch) embedSrc = `https://player.vimeo.com/video/${viMatch[1]}`;
+                else embedSrc = data.videoUrl;
+                gridVisual = `<iframe class="w-full aspect-video" src="${embedSrc}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 gridVisual = `<div class="w-full aspect-square bg-zinc-100 flex items-center justify-center"><span class="material-symbols-outlined text-zinc-400 text-4xl">image</span></div>`;
             }
