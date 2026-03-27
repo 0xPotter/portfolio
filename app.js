@@ -133,6 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         if(data.galleryUrls && data.galleryUrls.length > 0) {
                             galleryLabel.textContent = `${data.galleryUrls.length} secondary visual(s) saved (Upload new to replace)`;
                         }
+                        if(data.videoUrl) {
+                            document.getElementById('proj-video').value = data.videoUrl;
+                        }
+                        if(data.websiteUrl) {
+                            document.getElementById('proj-website').value = data.websiteUrl;
+                        }
                     }
                 });
             } else {
@@ -185,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         const title = document.getElementById('proj-title').value;
                         const category = document.getElementById('proj-category').value;
                         const narrative = document.getElementById('proj-narrative').value;
+                        const videoUrl = document.getElementById('proj-video').value.trim();
+                        const websiteUrl = document.getElementById('proj-website').value.trim();
                         const file = fileInput.files[0];
 
                         // 1. Upload Image (only if a new one is selected)
@@ -218,7 +226,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             const updateData = {
                                 title,
                                 category,
-                                narrative
+                                narrative,
+                                videoUrl,
+                                websiteUrl
                             };
                             if (imageUrl) updateData.imageUrl = imageUrl;
                             if (galleryUrls) updateData.galleryUrls = galleryUrls;
@@ -233,6 +243,8 @@ document.addEventListener('DOMContentLoaded', () => {
                                 narrative,
                                 imageUrl,
                                 galleryUrls: galleryUrls || [],
+                                videoUrl,
+                                websiteUrl,
                                 createdAt: serverTimestamp(),
                                 published: true
                             });

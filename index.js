@@ -106,6 +106,18 @@ function initializeFilters() {
 }
 
 // Global modal handlers
+function getEmbedUrl(url) {
+    if (!url) return null;
+    // YouTube
+    let match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+    if (match) return `https://www.youtube.com/embed/${match[1]}`;
+    // Vimeo
+    match = url.match(/vimeo\.com\/(\d+)/);
+    if (match) return `https://player.vimeo.com/video/${match[1]}`;
+    // Generic: return as-is if it looks like an embed
+    return url;
+}
+
 window.openProjectModal = (id) => {
     const data = window.projectsData[id];
     if (!data) return;
@@ -130,6 +142,39 @@ window.openProjectModal = (id) => {
     } else {
         galleryContainer.innerHTML = '';
         galleryContainer.classList.add('hidden');
+    }
+
+    // Video embed
+    const heroImg = document.getElementById('modal-hero');
+    const existingVideo = document.getElementById('modal-video-embed');
+    if (existingVideo) existingVideo.remove();
+
+    const embedUrl = getEmbedUrl(data.videoUrl);
+    if (embedUrl) {
+        const iframe = document.createElement('iframe');
+        iframe.id = 'modal-video-embed';
+        iframe.src = embedUrl;
+        iframe.className = 'w-full md:max-w-md lg:max-w-lg aspect-video rounded-lg shadow-2xl';
+        iframe.setAttribute('allowfullscreen', '');
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+        iframe.setAttribute('frameborder', '0');
+        heroImg.parentElement.insertBefore(iframe, heroImg.nextSibling);
+    }
+
+    // Website button
+    const existingBtn = document.getElementById('modal-visit-web');
+    if (existingBtn) existingBtn.remove();
+
+    if (data.websiteUrl) {
+        const narrativeEl = document.getElementById('modal-narrative');
+        const btn = document.createElement('a');
+        btn.id = 'modal-visit-web';
+        btn.href = data.websiteUrl;
+        btn.target = '_blank';
+        btn.rel = 'noopener noreferrer';
+        btn.className = 'mt-8 flex items-center justify-center gap-2 w-full py-3 px-6 rounded-xl bg-white/5 border border-white/10 text-neutral-200 text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-colors';
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">open_in_new</span> Visit Website';
+        narrativeEl.parentElement.insertBefore(btn, narrativeEl.nextSibling);
     }
 
     const modal = document.getElementById('project-modal');
