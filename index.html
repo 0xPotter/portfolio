@@ -235,39 +235,41 @@
 <!-- Cosmos-Style Project Details Modal -->
 <div id="project-modal" class="fixed inset-0 z-[100] bg-[#0a0a0a]/98 backdrop-blur-3xl hidden w-full h-full opacity-0 transition-opacity duration-500 ease-out overflow-hidden text-neutral-200">
     <!-- Close Button (Top Left Floating) -->
-    <button id="close-modal" class="absolute top-6 left-6 z-[110] w-10 h-10 rounded-full bg-white/5 hover:bg-white/20 border border-white/10 transition-colors flex items-center justify-center backdrop-blur-md cursor-pointer">
+    <button id="close-modal" class="absolute top-4 left-4 md:top-6 md:left-6 z-[110] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 transition-colors flex items-center justify-center backdrop-blur-md cursor-pointer">
         <span class="material-symbols-outlined text-[18px] text-white">close</span>
     </button>
 
-    <div class="flex flex-col md:flex-row w-full h-full">
-        <!-- Main Media Feed (Scrollable Left Area) -->
-        <div id="modal-scroll-area" class="flex-1 h-full overflow-y-auto pt-24 pb-32 px-4 md:px-12 flex flex-col items-center gap-16 hide-scroll relative scroll-smooth">
+    <!-- Mobile: single scrollable column / Desktop: side-by-side -->
+    <div id="modal-inner" class="flex flex-col md:flex-row w-full h-full overflow-y-auto md:overflow-hidden hide-scroll">
+
+        <!-- Main Media Feed -->
+        <div id="modal-scroll-area" class="w-full md:flex-1 md:h-full md:overflow-y-auto pt-20 md:pt-24 pb-8 md:pb-32 px-4 md:px-12 flex flex-col items-center gap-8 md:gap-16 hide-scroll relative scroll-smooth">
             <!-- Hero Media -->
-            <img id="modal-hero" class="max-w-full md:max-w-2xl lg:max-w-3xl h-auto object-contain shadow-2xl" src="" alt="Hero">
+            <img id="modal-hero" class="max-w-full md:max-w-2xl lg:max-w-3xl h-auto object-contain shadow-2xl rounded-lg" src="" alt="Hero">
             <!-- Secondary Media -->
-            <div id="modal-gallery" class="w-full max-w-2xl lg:max-w-3xl flex flex-col gap-16 hidden">
+            <div id="modal-gallery" class="w-full max-w-2xl lg:max-w-3xl flex flex-col gap-8 md:gap-16 hidden">
                 <!-- Injected images will go here stacked -->
             </div>
         </div>
 
-        <!-- Sticky Info Panel (Right Area) -->
-        <div class="w-full md:w-[380px] lg:w-[420px] shrink-0 h-full p-4 flex flex-col justify-center">
-            <div class="bg-[#141414] border border-white/5 rounded-[2rem] w-full h-[calc(100vh-2rem)] p-8 overflow-y-auto hide-scroll flex flex-col shadow-2xl">
+        <!-- Info Panel: inline on mobile, sticky column on desktop -->
+        <div class="w-full md:w-[380px] lg:w-[420px] shrink-0 md:h-full p-4 flex flex-col md:justify-center">
+            <div class="bg-[#141414] border border-white/5 rounded-2xl md:rounded-[2rem] w-full md:h-[calc(100vh-2rem)] p-6 md:p-8 md:overflow-y-auto hide-scroll flex flex-col shadow-2xl">
                 <!-- Header -->
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center justify-between mb-6 md:mb-8">
                     <p id="modal-category" class="font-sans text-[10px] tracking-[0.2em] uppercase text-neutral-500 font-bold"></p>
                     <span class="material-symbols-outlined text-neutral-600 text-[16px]">more_horiz</span>
                 </div>
                 
-                <h2 id="modal-title" class="text-3xl font-serif tracking-tight text-white mb-8 leading-snug"></h2>
+                <h2 id="modal-title" class="text-2xl md:text-3xl font-serif tracking-tight text-white mb-6 md:mb-8 leading-snug"></h2>
                 
-                <div class="w-full h-px bg-white/5 mb-8"></div>
+                <div class="w-full h-px bg-white/5 mb-6 md:mb-8"></div>
                 
                 <!-- Narrative -->
                 <p id="modal-narrative" class="text-sm text-neutral-400 font-sans leading-relaxed tracking-wide"></p>
                 
                 <!-- Footer Info -->
-                <div class="mt-auto pt-16">
+                <div class="md:mt-auto pt-8 md:pt-16 pb-4 md:pb-0">
                     <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 transition-colors hover:bg-white/[0.04]">
                         <div class="w-10 h-10 rounded-full bg-neutral-800 overflow-hidden border border-white/10">
                              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3" class="w-full h-full object-cover">

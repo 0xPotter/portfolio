@@ -137,6 +137,12 @@ window.openProjectModal = (id) => {
     // Lock body scroll
     document.body.classList.add('overflow-hidden');
     
+    // Reset scroll positions
+    const inner = document.getElementById('modal-inner');
+    const scrollArea = document.getElementById('modal-scroll-area');
+    if (inner) inner.scrollTop = 0;
+    if (scrollArea) scrollArea.scrollTop = 0;
+    
     // Animate in
     requestAnimationFrame(() => {
         modal.classList.remove('opacity-0');
