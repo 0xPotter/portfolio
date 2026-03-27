@@ -33,10 +33,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.projectsData[doc.id] = data;
 
             let catLabel = data.category ? data.category.toLowerCase() : 'all';
+
+            // Determine the visual for the masonry grid
+            let gridVisual = '';
+            if (data.imageUrl) {
+                gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}">`;
+            } else if (data.videoUrl) {
+                // Try to extract a YouTube thumbnail
+                const ytMatch = data.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+                if (ytMatch) {
+                    gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg">`;
+                } else {
+                    // Generic video placeholder
+                    gridVisual = `<div class="w-full aspect-video bg-zinc-900 flex items-center justify-center"><span class="material-symbols-outlined text-white text-5xl opacity-60">play_circle</span></div>`;
+                }
+            } else {
+                gridVisual = `<div class="w-full aspect-square bg-zinc-100 flex items-center justify-center"><span class="material-symbols-outlined text-zinc-400 text-4xl">image</span></div>`;
+            }
+
             html += `
             <div class="masonry-item group relative bg-surface-container transition-opacity duration-500 cursor-pointer" data-category="${catLabel}" onclick="openProjectModal('${doc.id}')">
                 <div class="block w-full h-full overflow-hidden">
-                    <img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}">
+                    ${gridVisual}
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
                         <p class="text-[10px] tracking-widest uppercase text-white font-medium">${data.title} / ${data.category}</p>
                     </div>
@@ -125,7 +143,15 @@ window.openProjectModal = (id) => {
     document.getElementById('modal-category').textContent = data.category || '';
     document.getElementById('modal-title').textContent = data.title;
     document.getElementById('modal-narrative').innerHTML = (data.narrative || '').replace(/\n/g, '<br>');
-    document.getElementById('modal-hero').src = data.imageUrl;
+    // Hero image: show or hide based on availability
+    const heroImg = document.getElementById('modal-hero');
+    if (data.imageUrl) {
+        heroImg.src = data.imageUrl;
+        heroImg.classList.remove('hidden');
+    } else {
+        heroImg.src = '';
+        heroImg.classList.add('hidden');
+    }
 
     const galleryContainer = document.getElementById('modal-gallery');
     if (data.galleryUrls && data.galleryUrls.length > 0) {
@@ -145,7 +171,6 @@ window.openProjectModal = (id) => {
     }
 
     // Video embed
-    const heroImg = document.getElementById('modal-hero');
     const existingVideo = document.getElementById('modal-video-embed');
     if (existingVideo) existingVideo.remove();
 
