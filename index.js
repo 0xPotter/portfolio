@@ -149,14 +149,18 @@ window.openProjectModal = (id) => {
     });
 };
 
-document.getElementById('close-modal').addEventListener('click', () => {
+function closeModal() {
     const modal = document.getElementById('project-modal');
+    if (modal.classList.contains('hidden')) return;
     modal.classList.add('opacity-0');
-    
-    // Unlock body scroll
     document.body.classList.remove('overflow-hidden');
-    
     setTimeout(() => {
         modal.classList.add('hidden');
-    }, 500); // Wait for transition duration
+    }, 500);
+}
+
+document.getElementById('close-modal').addEventListener('click', closeModal);
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
 });
