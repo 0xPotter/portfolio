@@ -310,8 +310,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (avatarInput.files.length > 0) {
                         const file = avatarInput.files[0];
-                        const avatarRef = ref(storage, `profile/avatar_${Date.now()}_${file.name}`);
-                        await uploadBytes(avatarRef, file);
+                        // Convert any image (including HEIC) to JPEG via canvas
+                        const convertToJpeg = (f) => new Promise((resolve) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const MAX = 400;
+                                let w = img.width, h = img.height;
+                                if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+                                else { w = Math.round(w * MAX / h); h = MAX; }
+                                canvas.width = w;
+                                canvas.height = h;
+                                canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                                canvas.toBlob(resolve, 'image/jpeg', 0.85);
+                            };
+                            img.src = URL.createObjectURL(f);
+                        });
+                        const jpegBlob = await convertToJpeg(file);
+                        const avatarRef = ref(storage, `profile/avatar_${Date.now()}.jpg`);
+                        await uploadBytes(avatarRef, jpegBlob);
                         updateData.avatarUrl = await getDownloadURL(avatarRef);
                     }
 

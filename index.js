@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let colHtml = `<div class="${hideOnMobile} flex-1 flex flex-col gap-4 ${anim}">`;
                 for (let i = 0; i < 4; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    colHtml += `<img class="w-full ${aspects[i]} object-cover" src="${randomImg}">`;
+                    colHtml += `<img class="w-full ${aspects[i]} object-cover opacity-0 transition-opacity duration-1000" onload="this.classList.remove('opacity-0')" src="${randomImg}" loading="eager" decoding="async">`;
                 }
                 colHtml += '</div>';
                 heroBgHtml += colHtml;
