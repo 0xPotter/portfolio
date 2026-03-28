@@ -138,44 +138,45 @@
 <script>
 (function() {
   const blurEl = document.getElementById('blur-values');
-  let prevX = 0, prevY = 0, rafId = null;
-  let currentBlurX = 0, currentBlurY = 0;
+  const hero = document.querySelector('section');
+  let prevX = 0, prevY = 0;
+  let targetBlurX = 0, targetBlurY = 0;
+  let smoothBlurX = 0, smoothBlurY = 0;
+  let running = false;
 
-  document.querySelector('section').addEventListener('mousemove', (e) => {
+  hero.addEventListener('mousemove', (e) => {
     const vx = Math.abs(e.clientX - prevX);
     const vy = Math.abs(e.clientY - prevY);
     prevX = e.clientX;
     prevY = e.clientY;
 
-    // Map velocity to blur (capped at 25px)
-    const targetX = Math.min(vx * 0.8, 25);
-    const targetY = Math.min(vy * 0.4, 12);
+    // Gentle mapping — max 8px blur, subtle multiplier
+    targetBlurX = Math.min(vx * 0.35, 8);
+    targetBlurY = Math.min(vy * 0.2, 4);
 
-    currentBlurX = targetX;
-    currentBlurY = targetY;
-
-    if (!rafId) animateBlur();
+    if (!running) { running = true; animate(); }
   });
 
-  function animateBlur() {
-    // Ease blur back to 0
-    currentBlurX *= 0.85;
-    currentBlurY *= 0.85;
+  function animate() {
+    // Smooth lerp towards target, then decay target to 0
+    smoothBlurX += (targetBlurX - smoothBlurX) * 0.12;
+    smoothBlurY += (targetBlurY - smoothBlurY) * 0.12;
+    targetBlurX *= 0.94;
+    targetBlurY *= 0.94;
 
-    if (currentBlurX < 0.1 && currentBlurY < 0.1) {
+    if (smoothBlurX < 0.05 && smoothBlurY < 0.05) {
       blurEl.setAttribute('stdDeviation', '0,0');
-      rafId = null;
+      running = false;
       return;
     }
 
-    blurEl.setAttribute('stdDeviation', `${currentBlurX.toFixed(1)},${currentBlurY.toFixed(1)}`);
-    rafId = requestAnimationFrame(animateBlur);
+    blurEl.setAttribute('stdDeviation', smoothBlurX.toFixed(2) + ',' + smoothBlurY.toFixed(2));
+    requestAnimationFrame(animate);
   }
 
-  // Reset on mouse leave
-  document.querySelector('section').addEventListener('mouseleave', () => {
-    currentBlurX = 0;
-    currentBlurY = 0;
+  hero.addEventListener('mouseleave', () => {
+    targetBlurX = 0;
+    targetBlurY = 0;
   });
 })();
 </script>
