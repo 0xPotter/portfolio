@@ -121,63 +121,68 @@
 <!-- 3 columns of images injected by index.js -->
 </div>
 <div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
-<!-- SVG filter for directional motion blur -->
-<svg class="absolute w-0 h-0" aria-hidden="true">
-  <defs>
-    <filter id="motion-blur">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="0,0" id="blur-values"/>
-    </filter>
-  </defs>
-</svg>
-<h1 id="hero-title" class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold select-none" style="filter: url(#motion-blur); will-change: filter;">Portafolio</h1>
-<p class="mt-6 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
+<!-- Interactive video title controlled by cursor -->
+<video id="hero-video" class="w-[85%] max-w-[800px] h-auto pointer-events-none select-none" muted playsinline preload="auto" src="title_blur.webm"></video>
+<p class="mt-4 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
 <div class="absolute bottom-12 animate-bounce opacity-40">
 <span class="material-symbols-outlined text-4xl" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
 </div>
 </div>
 <script>
 (function() {
-  const blurEl = document.getElementById('blur-values');
+  const video = document.getElementById('hero-video');
   const hero = document.querySelector('section');
-  let prevX = 0, prevY = 0;
-  let targetBlurX = 0, targetBlurY = 0;
-  let smoothBlurX = 0, smoothBlurY = 0;
-  let running = false;
+  let targetTime = 0, currentTime = 0;
+  let isHovering = false, running = false;
+
+  video.addEventListener('loadedmetadata', () => {
+    // Start at the middle frame
+    video.currentTime = video.duration / 2;
+    currentTime = video.duration / 2;
+    targetTime = video.duration / 2;
+
+    // Mobile: auto-play a gentle loop
+    if ('ontouchstart' in window) {
+      let t = 0;
+      function mobileLoop() {
+        t += 0.008;
+        video.currentTime = (Math.sin(t) * 0.5 + 0.5) * video.duration;
+        requestAnimationFrame(mobileLoop);
+      }
+      mobileLoop();
+    }
+  });
 
   hero.addEventListener('mousemove', (e) => {
-    const vx = Math.abs(e.clientX - prevX);
-    const vy = Math.abs(e.clientY - prevY);
-    prevX = e.clientX;
-    prevY = e.clientY;
-
-    // Gentle mapping — max 8px blur, subtle multiplier
-    targetBlurX = Math.min(vx * 0.35, 8);
-    targetBlurY = Math.min(vy * 0.2, 4);
+    isHovering = true;
+    const rect = hero.getBoundingClientRect();
+    // Map cursor X position to video timeline
+    const normalizedX = (e.clientX - rect.left) / rect.width;
+    targetTime = normalizedX * (video.duration || 12);
 
     if (!running) { running = true; animate(); }
   });
 
-  function animate() {
-    // Smooth lerp towards target, then decay target to 0
-    smoothBlurX += (targetBlurX - smoothBlurX) * 0.12;
-    smoothBlurY += (targetBlurY - smoothBlurY) * 0.12;
-    targetBlurX *= 0.94;
-    targetBlurY *= 0.94;
+  hero.addEventListener('mouseleave', () => {
+    isHovering = false;
+    // Gently return to middle
+    targetTime = (video.duration || 12) / 2;
+  });
 
-    if (smoothBlurX < 0.05 && smoothBlurY < 0.05) {
-      blurEl.setAttribute('stdDeviation', '0,0');
+  function animate() {
+    // Smooth lerp
+    currentTime += (targetTime - currentTime) * 0.08;
+    
+    // Clamp to valid range
+    const t = Math.max(0, Math.min(currentTime, (video.duration || 12) - 0.01));
+    video.currentTime = t;
+
+    if (Math.abs(currentTime - targetTime) < 0.001 && !isHovering) {
       running = false;
       return;
     }
-
-    blurEl.setAttribute('stdDeviation', smoothBlurX.toFixed(2) + ',' + smoothBlurY.toFixed(2));
     requestAnimationFrame(animate);
   }
-
-  hero.addEventListener('mouseleave', () => {
-    targetBlurX = 0;
-    targetBlurY = 0;
-  });
 })();
 </script>
 </section>
