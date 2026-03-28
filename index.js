@@ -178,7 +178,7 @@ window.openProjectModal = (id) => {
         const iframe = document.createElement('iframe');
         iframe.id = 'modal-video-embed';
         iframe.src = embedUrl;
-        iframe.className = 'w-full md:max-w-md lg:max-w-lg aspect-video rounded-lg shadow-2xl';
+        iframe.className = 'w-full aspect-video rounded-lg shadow-2xl';
         iframe.setAttribute('allowfullscreen', '');
         iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
         iframe.setAttribute('frameborder', '0');
