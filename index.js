@@ -24,14 +24,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         let allImages = [];
         let html = '';
         
+        // Collect projects into an array for shuffling
+        let projects = [];
         querySnapshot.forEach((doc) => {
             const data = doc.data();
-            if (!data.published) return; // Client-side filter
-            
+            if (!data.published) return;
             if(data.imageUrl) allImages.push(data.imageUrl);
-
             window.projectsData[doc.id] = data;
+            projects.push({ id: doc.id, data });
+        });
 
+        // Fisher-Yates shuffle for random order on every load
+        for (let i = projects.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [projects[i], projects[j]] = [projects[j], projects[i]];
+        }
+
+        projects.forEach(({ id, data }) => {
             let catLabel = data.category ? data.category.toLowerCase() : 'all';
 
             // Determine the visual for the masonry grid
@@ -51,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             html += `
-            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500 cursor-pointer" data-category="${catLabel}" onclick="openProjectModal('${doc.id}')">
+            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500 cursor-pointer" data-category="${catLabel}" onclick="openProjectModal('${id}')">
                 <div class="block w-full h-full overflow-hidden">
                     ${gridVisual}
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
