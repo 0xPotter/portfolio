@@ -150,13 +150,22 @@
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   }
 
-  video.addEventListener('loadeddata', () => {
+  function handleReady() {
+    if (ready) return;
     ready = true;
     const mid = video.duration / 2;
     video.currentTime = mid;
     smoothTime = mid;
     targetTime = mid;
-  });
+  }
+
+  // Handle both cached and fresh loads
+  if (video.readyState >= 2) {
+    handleReady();
+  } else {
+    video.addEventListener('loadeddata', handleReady);
+    video.addEventListener('canplay', handleReady);
+  }
 
   video.addEventListener('seeked', () => {
     seeking = false;
