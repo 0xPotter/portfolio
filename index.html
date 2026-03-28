@@ -121,12 +121,64 @@
 <!-- 3 columns of images injected by index.js -->
 </div>
 <div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
-<h1 class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold">Portafolio</h1>
+<!-- SVG filter for directional motion blur -->
+<svg class="absolute w-0 h-0" aria-hidden="true">
+  <defs>
+    <filter id="motion-blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0,0" id="blur-values"/>
+    </filter>
+  </defs>
+</svg>
+<h1 id="hero-title" class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold select-none" style="filter: url(#motion-blur); will-change: filter;">Portafolio</h1>
 <p class="mt-6 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
 <div class="absolute bottom-12 animate-bounce opacity-40">
 <span class="material-symbols-outlined text-4xl" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
 </div>
 </div>
+<script>
+(function() {
+  const blurEl = document.getElementById('blur-values');
+  let prevX = 0, prevY = 0, rafId = null;
+  let currentBlurX = 0, currentBlurY = 0;
+
+  document.querySelector('section').addEventListener('mousemove', (e) => {
+    const vx = Math.abs(e.clientX - prevX);
+    const vy = Math.abs(e.clientY - prevY);
+    prevX = e.clientX;
+    prevY = e.clientY;
+
+    // Map velocity to blur (capped at 25px)
+    const targetX = Math.min(vx * 0.8, 25);
+    const targetY = Math.min(vy * 0.4, 12);
+
+    currentBlurX = targetX;
+    currentBlurY = targetY;
+
+    if (!rafId) animateBlur();
+  });
+
+  function animateBlur() {
+    // Ease blur back to 0
+    currentBlurX *= 0.85;
+    currentBlurY *= 0.85;
+
+    if (currentBlurX < 0.1 && currentBlurY < 0.1) {
+      blurEl.setAttribute('stdDeviation', '0,0');
+      rafId = null;
+      return;
+    }
+
+    blurEl.setAttribute('stdDeviation', `${currentBlurX.toFixed(1)},${currentBlurY.toFixed(1)}`);
+    rafId = requestAnimationFrame(animateBlur);
+  }
+
+  // Reset on mouse leave
+  document.querySelector('section').addEventListener('mouseleave', () => {
+    currentBlurX = 0;
+    currentBlurY = 0;
+  });
+})();
+</script>
 </section>
 <!-- Top Navigation -->
 <nav class="sticky top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex justify-between items-center px-4 md:px-6 py-3">
