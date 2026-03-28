@@ -1,10 +1,9 @@
-<!DOCTYPE html><html class="light" lang="en"><head>
+<!DOCTYPE html><html class="light" lang="es"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>GALLERY | Monograph</title>
+<title>PORTAFOLIO | JC</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -63,7 +62,6 @@
               "headline": ["Inter"],
               "body": ["Inter"],
               "label": ["Inter"],
-              "serif": ["Playfair Display", "serif"]
             },
             borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
             animation: {
@@ -98,15 +96,18 @@
             scrollbar-width: none;
         }
         .masonry-grid {
-            column-count: 1;
-            column-gap: 0.5rem;
+            column-count: 2;
+            column-gap: 0.75rem;
         }
-        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
-        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-        @media (min-width: 1280px) { .masonry-grid { column-count: 4; } }
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; column-gap: 0.75rem; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; column-gap: 0.5rem; } }
+        @media (min-width: 1280px) { .masonry-grid { column-count: 4; column-gap: 0.5rem; } }
         .masonry-item {
             break-inside: avoid;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        @media (min-width: 1024px) {
+            .masonry-item { margin-bottom: 0.5rem; }
         }
         .hero-gradient {
             background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
@@ -114,26 +115,10 @@
     </style>
 </head>
 <body class="bg-background font-body text-on-background antialiased selection:bg-primary selection:text-on-primary" data-mode="connect">
-<section class="relative h-[707px] w-full overflow-hidden bg-black flex items-center justify-center" data-stitch-vh="h-[707px]===h-[80vh]">
-<div class="absolute inset-0 z-0 flex gap-4 opacity-40 blur-sm scale-110">
-<div class="flex-1 flex flex-col gap-4 animate-float">
-<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzaY0ofRRbTFqwFLS3oNRkk5K08vWFX1G0OzQl7aqgy46zJovwT6bPEmxfiZc4aFRCmFdFlwxxCl5th2-N-UddSJwraRzN1QGwleuqJQ2KYowRJ7rcxJvzU37HEDi3mNSefVJGlEf3SnzB6CKee2SkyI0zek0XCYEwVaB8cSzxmp-9Tk9TgwzzGoXU4gWK-3qG_RrSr7fLLrUCUWAABuiGIK76LyKCCv2bIMF94S1ZafEsTmeFGaRZk9gJiSJy92hJcmkFzFAZ7v7w">
-<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG6n8q52nBXCHYfwwP4gPdQ3Gna2a_ly67jIDUShoagJnywFSyK3ArFkcBNdGm-DqAkBQwJN7_1uZX2py8xBc8ZGy2V36SljwExIOFvtgchnoBrP2LGQZjMTye-JU4t9KLCL2FKqxYcptEUwt1uXpNa1cWCI1eDUYFY2oj12YrHYg6xI_xTlNI20a39iKkQLG-9AJL2VH6avlsginlYKex2aet44fPTC3qFM-4eCyf7lCkxaMTLM0lGtNe29Ed0LDJnOJ41uWW-fz2">
-<img class="w-full aspect-[4/3] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjgW6anXPMPLOdCTer5SKj-gV-6lysRUpFM1JziZ7i1tHL_waErO5OG6NZimTvZhqmhum_2MzV4wLhQk3lPv3KaWApV4NU3G94rhCZEYoLcjwhQp-d08AIMgI3iLy207w6rYDSU8yie1KGgvBHr23-26eYZe48vd-bbc_59axDl2MAgsfEu9NRxPyVr42RbAfu-xOOXA1wkptmecLPRh7bUvJjTPwJ4fzKTqWgLZi8fCg9J3JUCeAEUj9gaQ9yRw1PW8-AnMGw2NcT">
-<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzaY0ofRRbTFqwFLS3oNRkk5K08vWFX1G0OzQl7aqgy46zJovwT6bPEmxfiZc4aFRCmFdFlwxxCl5th2-N-UddSJwraRzN1QGwleuqJQ2KYowRJ7rcxJvzU37HEDi3mNSefVJGlEf3SnzB6CKee2SkyI0zek0XCYEwVaB8cSzxmp-9Tk9TgwzzGoXU4gWK-3qG_RrSr7fLLrUCUWAABuiGIK76LyKCCv2bIMF94S1ZafEsTmeFGaRZk9gJiSJy92hJcmkFzFAZ7v7w">
-</div>
-<div class="flex-1 flex flex-col gap-4 animate-float-reverse">
-<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFnLm4TwVIevfiEW0uuo0vyK2_WaoNtmHeLlfQqGUj3NtjxApo6-x8U87p1dYfjRP2Btgp36td9ZWD9EyJnQ8n2bSaad8ZI7Wt-s_2xL-w1Hu9liM8PKpsvMJnR-VBPgLOIUiVziaI16r9CaVMRN-dy2L4QgrB6qXLovOcE0AblJ6jDtrHSjrpVrbqiVCaU_d2HdJ0APyFp-z22H3xS12WLLzDY1zB8J-SpDdJyasKEVO2aS4Y9a-svmR-QafI7hPiemAzSJCN7eU2">
-<img class="w-full aspect-[3/4] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZGZxBx5D68CbRsdUplnpFv9peVRMC1XWgSoh3V8s9quPMUlLkVlIgvmvQxT7r72SuPxzi7mCmgyMhq78vc5vCX1h0EP6zD5l8TQ5tixw-B7koWmCbHHLfrfLzWXRBwzpfQiqhJukt63M6ANnluTTjqEHH0DLQ7GRT3V61V_QvQiXCcsrCwGUFsHa4TDgd9J9M8ZmDRTKz8AxCnj_-9pWziIMd4ugu99_r1MY6x06stQXgbMFQ-rvi5NpvGXtQPlfmvFAEBksFtKB4">
-<img class="w-full aspect-[4/5] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPOc9efvSCzqyLdgCxWkUYTAALY5detG9QqHgf76HeeDf4E4wQQ3JqmmFm8INirtt1rW3A5r4Q46BtDUD5Rx5WxPBqIcfHSdpuJnXNNcF8bVTP4uNYjESrqIs1ARZJ9rcjhKjsUTyXqqVl68c4f3KcxLWXTYQII-FWB9j9vjeNHTVvAigkEnx03Mn1xwHd5GqcBOnMScZucrEdzNFMoZBqap6nKceytL5heibyQsyfm6djxqvt5azvkhXXNOxjvb9aTGDAwECpDK-Z">
-<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFnLm4TwVIevfiEW0uuo0vyK2_WaoNtmHeLlfQqGUj3NtjxApo6-x8U87p1dYfjRP2Btgp36td9ZWD9EyJnQ8n2bSaad8ZI7Wt-s_2xL-w1Hu9liM8PKpsvMJnR-VBPgLOIUiVziaI16r9CaVMRN-dy2L4QgrB6qXLovOcE0AblJ6jDtrHSjrpVrbqiVCaU_d2HdJ0APyFp-z22H3xS12WLLzDY1zB8J-SpDdJyasKEVO2aS4Y9a-svmR-QafI7hPiemAzSJCN7eU2">
-</div>
-<div class="hidden md:flex flex-1 flex flex-col gap-4 animate-float">
-<img class="w-full aspect-[16/9] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP8yX33zRvMA-kRdAfVYFgeE-2SBo-9dZVKxROrRx7-iZMe6iyjIO9Wtv4xFbUSSFJa1QRH70MZ-MSPrkxnnVIzkL8M6NOsbu0Wm50O7NkR4OaYdhWytiL06PGJn-qpX58DOlnJUaxcNWgq1-qbK_WGQxvusED1bXrQD_gUJtPza587zitKUH2y706SvwzC2Bfbm0tvKp7f2JHF3Ji4opJPlcmYeySM3OMo42aVwGST4R8cjnqq1bcbiNo9ioJCSRigNCLLVmBYlz6">
-<img class="w-full aspect-[4/3] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvJqwlc0Z4l9Pqn24aUExgyL2tg2aP_F-TRnk61He0OWm75Cf2nbxoukrYYg9PQqXrfb-mrJ7wM6rjNB8GwifCkQvQ-An6NqIpwQsGHeuNKbxrXJ2hTRFc9N54niJMfGUbgPD6NNp_LqC_a4P5Lc0za5W-gegx-hCZlZFgEfb8dGOEh9O3FMiPJp6vALlv9oGfnnuuiJfqaG35jnkeD9hrvhzMjmPHpR_dc2RCIj8eLgveSZ-LAck_vyQO0uStLhiR-U2pa3lV_yk4">
-<img class="w-full aspect-square object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8mmaeiA5gtKXd0xSejaYuQtcXsqzhcVc2mA0501m8vxg37GzKKIpGxxQdiRZOexBQsdBcpvYWAwZqDqP-Lm5l2MsTzHyksW7ZyqH8SFCMbakVaqinlS6_6oMTMQ43mffiHVPlZchzKX1xsDhz97WiPC3qPA35PQKd9ZMijkFSInpfWdZC8b47yFSmILS2JrE0ZLcPJvXMbxT8GdT1S2u-8xh_4NmwcxzTAq6cL88hb0-1mEaNkRFBwj6kWe94PhErB6I9AvZk2_NI">
-<img class="w-full aspect-[16/9] object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP8yX33zRvMA-kRdAfVYFgeE-2SBo-9dZVKxROrRx7-iZMe6iyjIO9Wtv4xFbUSSFJa1QRH70MZ-MSPrkxnnVIzkL8M6NOsbu0Wm50O7NkR4OaYdhWytiL06PGJn-qpX58DOlnJUaxcNWgq1-qbK_WGQxvusED1bXrQD_gUJtPza587zitKUH2y706SvwzC2Bfbm0tvKp7f2JHF3Ji4opJPlcmYeySM3OMo42aVwGST4R8cjnqq1bcbiNo9ioJCSRigNCLLVmBYlz6">
-</div>
+<!-- Hero Banner — images injected dynamically from Firebase -->
+<section class="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-black flex items-center justify-center">
+<div id="hero-bg" class="absolute inset-0 z-0 flex gap-4 opacity-40 blur-sm scale-110">
+<!-- 3 columns of images injected by index.js -->
 </div>
 <div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
 <h1 class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold">Portafolio</h1>
@@ -144,42 +129,33 @@
 </div>
 </section>
 <!-- Top Navigation -->
-<nav class="sticky top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex justify-between items-center px-6 py-3 no-line-rule tonal-shift-only flat no shadows">
-<div class="flex items-center gap-8">
-<span class="text-sm font-bold tracking-tighter text-zinc-900 dark:text-zinc-50">Proyectos</span>
-<div class="hidden md:flex gap-6 items-center" id="filter-nav">
-<button class="filter-btn active font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-900 dark:text-zinc-50 font-bold border-b border-zinc-900 dark:border-zinc-50 pb-0.5 hover:opacity-70 transition-all duration-200" data-filter="all">Todo</button>
-<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="social">Social</button>
-<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="branding">Branding</button>
-<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="print">print</button>
-<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="3d">3D</button>
-<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200" data-filter="web">Web</button>
+<nav class="sticky top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex justify-between items-center px-4 md:px-6 py-3">
+<div class="flex items-center gap-4 md:gap-8 overflow-x-auto hide-scroll w-full">
+<span class="text-sm font-bold tracking-tighter text-zinc-900 dark:text-zinc-50 shrink-0">Proyectos</span>
+<div class="flex gap-4 md:gap-6 items-center" id="filter-nav">
+<button class="filter-btn active font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-900 dark:text-zinc-50 font-bold border-b border-zinc-900 dark:border-zinc-50 pb-0.5 hover:opacity-70 transition-all duration-200 shrink-0" data-filter="all">Todo</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200 shrink-0" data-filter="social">Social</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200 shrink-0" data-filter="branding">Branding</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200 shrink-0" data-filter="print">Packaging & Print</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200 shrink-0" data-filter="3d">3D</button>
+<button class="filter-btn font-sans text-[11px] tracking-[0.05em] uppercase font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors hover:opacity-70 transition-all duration-200 shrink-0" data-filter="web">Web</button>
 </div>
-</div>
-<div class="flex items-center gap-4">
-<div class="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full">
-<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-[11px] uppercase tracking-widest w-32 placeholder:text-outline-variant" placeholder="Explore projects..." type="text">
-</div>
-
 </div>
 </nav>
 <!-- Main Content: Masonry Grid -->
-<main class="pt-12 px-4 md:px-8 pb-12">
+<main class="pt-8 px-3 md:px-8 pb-12">
 <div class="masonry-grid">
 <!-- Projects are dynamically loaded from Firebase -->
 </div>
 </main>
 <!-- Footer -->
-<footer class="w-full py-12 mt-24 bg-zinc-50 dark:bg-zinc-900 flex flex-col md:flex-row justify-between items-center px-8 max-w-full gap-4 tonal-shift from surface to surface-container-low flat">
-<div class="hidden">GALLERY</div> <!-- style_brand_logo: hidden -->
+<footer class="w-full py-12 mt-24 bg-zinc-50 dark:bg-zinc-900 flex flex-col md:flex-row justify-between items-center px-8 max-w-full gap-4">
 <span class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500">
-            © 2024 Gallery Monograph
+            © 2026 Jeremy Campos
         </span>
 <div class="flex gap-8">
-<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Archive</a>
 <a class="font-sans text-[10px] tracking-widest uppercase text-zinc-900 dark:text-zinc-100 hover:opacity-70 transition-opacity font-bold" href="login.html">Login</a>
-<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="#">Contact</a>
+<a class="font-sans text-[10px] tracking-widest uppercase text-zinc-400 dark:text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors" href="contact.html">Contacto</a>
 </div>
 </footer>
 
@@ -221,12 +197,12 @@
                 
                 <!-- Footer Info -->
                 <div class="md:mt-auto pt-8 md:pt-16 pb-4 md:pb-0">
-                    <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 transition-colors hover:bg-white/[0.04]">
+                    <div id="modal-creator" class="flex items-center gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 transition-colors hover:bg-white/[0.04]">
                         <div class="w-10 h-10 rounded-full bg-neutral-800 overflow-hidden border border-white/10">
-                             <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3" class="w-full h-full object-cover">
+                             <img id="modal-creator-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3" class="w-full h-full object-cover">
                         </div>
                         <div class="flex flex-col">
-                             <span class="text-xs font-bold text-neutral-200 tracking-wide">Jeremy</span>
+                             <span id="modal-creator-name" class="text-xs font-bold text-neutral-200 tracking-wide">Jeremy</span>
                              <span class="text-[9px] text-neutral-500 uppercase tracking-widest">Creator</span>
                         </div>
                     </div>
@@ -238,3 +214,4 @@
 
 <script type="module" src="index.js"></script>
 </body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Archive Admin | Monograph</title>
+    <title>Admin | JC Portfolio</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -83,6 +83,7 @@
             <li><a href="#dashboard" data-path="dashboard" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a></li>
             <li><a href="#gallery" data-path="gallery" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">grid_view</span><span>Projects</span></a></li>
             <li><a href="#add-project" data-path="add-project" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">add</span><span>Add New</span></a></li>
+            <li><a href="#profile" data-path="profile" class="nav-link flex items-center gap-4 px-6 py-3 text-stone-400 text-sm uppercase tracking-widest hover:text-black transition-colors"><span class="material-symbols-outlined">person</span><span>Profile</span></a></li>
         </ul>
     </nav>
 </aside>
@@ -228,6 +229,41 @@
     </div>
 </template>
 
+<!-- Profile Template -->
+<template id="tpl-profile">
+    <div class="px-6 py-10 max-w-2xl mx-auto w-full flex-1">
+        <header class="mb-12">
+            <span class="text-[0.6875rem] font-bold uppercase tracking-[0.15em] text-on-surface-variant mb-2 block">Settings</span>
+            <h2 class="text-[1.75rem] font-bold tracking-tight text-primary leading-none">Profile</h2>
+        </header>
+
+        <form id="profile-form" class="space-y-10">
+            <!-- Avatar -->
+            <div class="flex flex-col items-center gap-4">
+                <div id="profile-avatar-preview" class="w-24 h-24 rounded-full bg-stone-200 overflow-hidden border-2 border-stone-200 relative group cursor-pointer">
+                    <img id="profile-avatar-img" src="" class="w-full h-full object-cover" alt="Avatar">
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white">photo_camera</span>
+                    </div>
+                    <input id="profile-avatar-input" type="file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                </div>
+                <p class="text-[10px] uppercase tracking-widest text-stone-400">Click to change avatar</p>
+            </div>
+
+            <!-- Display Name -->
+            <div class="group">
+                <label class="block text-[0.6875rem] uppercase tracking-widest text-on-surface-variant mb-2 transition-colors group-focus-within:text-primary">Display Name</label>
+                <input id="profile-name" class="w-full bg-transparent border-none border-b border-outline-variant/30 focus:ring-0 focus:border-primary transition-all py-2 text-on-surface placeholder:text-stone-300 font-inter text-md" placeholder="Your display name" type="text" required>
+            </div>
+
+            <!-- Status -->
+            <p id="profile-status" class="text-xs text-center hidden"></p>
+
+            <!-- Save -->
+            <button type="submit" class="w-full h-12 bg-primary text-white font-inter text-xs uppercase tracking-widest hover:opacity-90 transition-opacity active:scale-[0.98]">Save Profile</button>
+        </form>
+    </div>
+</template>
 
 
 <script type="module" src="app.js"></script>

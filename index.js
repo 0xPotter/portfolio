@@ -1,10 +1,10 @@
-import { db, collection, getDocs, query, orderBy } from './firebase-config.js';
+import { db, collection, getDocs, query, orderBy, doc, getDoc } from './firebase-config.js';
 
 window.projectsData = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
     const masonryContainer = document.querySelector('.masonry-grid');
-    const heroCols = document.querySelectorAll('.animate-float, .animate-float-reverse');
+    const heroBg = document.getElementById('hero-bg');
     
     try {
         // Avoid requiring a composite index by fetching all and filtering locally
@@ -15,8 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const querySnapshot = await getDocs(q);
         
         if (querySnapshot.empty) {
-            // If database is empty, maintain the premium hardcoded demo data and just initialize filters
-            console.log("No projects found in DB. Showing demo content.");
+            console.log("No projects found in DB.");
             initializeFilters();
             return;
         }
@@ -74,21 +73,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         masonryContainer.innerHTML = html;
 
         // Auto-fill hero section with live project images
-        if (allImages.length > 0) {
-            heroCols.forEach((col, index) => {
-                let colHtml = '';
-                // 3 or 4 images per column
-                for(let i=0; i<4; i++) {
+        if (allImages.length > 0 && heroBg) {
+            const aspects = ['aspect-[3/4]', 'aspect-square', 'aspect-[4/3]', 'aspect-[3/4]'];
+            const colClasses = ['animate-float', 'animate-float-reverse', 'animate-float'];
+            let heroBgHtml = '';
+            colClasses.forEach((anim, colIndex) => {
+                const hideOnMobile = colIndex === 2 ? 'hidden md:flex' : '';
+                let colHtml = `<div class="${hideOnMobile} flex-1 flex flex-col gap-4 ${anim}">`;
+                for (let i = 0; i < 4; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    // Vary aspect ratios for the masonry feel in the animation
-                    const aspect = i % 2 === 0 ? 'aspect-[4/3]' : 'aspect-[3/4]';
-                    colHtml += `<img class="w-full ${aspect} object-cover" src="${randomImg}">`;
+                    colHtml += `<img class="w-full ${aspects[i]} object-cover" src="${randomImg}">`;
                 }
-                col.innerHTML = colHtml;
+                colHtml += '</div>';
+                heroBgHtml += colHtml;
             });
+            heroBg.innerHTML = heroBgHtml;
         }
 
         initializeFilters();
+
+        // Load creator profile for the modal
+        try {
+            const profileSnap = await getDoc(doc(db, 'settings', 'profile'));
+            if (profileSnap.exists()) {
+                const profile = profileSnap.data();
+                if (profile.displayName) {
+                    const nameEl = document.getElementById('modal-creator-name');
+                    if (nameEl) nameEl.textContent = profile.displayName;
+                }
+                if (profile.avatarUrl) {
+                    const avatarEl = document.getElementById('modal-creator-avatar');
+                    if (avatarEl) avatarEl.src = profile.avatarUrl;
+                }
+            }
+        } catch(profileErr) {
+            console.log('Could not load profile:', profileErr);
+        }
 
     } catch(err) {
         console.error("Error loading projects: ", err);

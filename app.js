@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const routes = {
         'dashboard': 'tpl-dashboard',
         'add-project': 'tpl-add-project',
-        'gallery': 'tpl-gallery'
+        'gallery': 'tpl-gallery',
+        'profile': 'tpl-profile'
     };
 
     function updateActiveNav(path) {
@@ -270,6 +271,61 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
+        }
+        if (hash === 'profile') {
+            const form = document.getElementById('profile-form');
+            const nameInput = document.getElementById('profile-name');
+            const avatarInput = document.getElementById('profile-avatar-input');
+            const avatarImg = document.getElementById('profile-avatar-img');
+            const statusEl = document.getElementById('profile-status');
+
+            // Load existing profile
+            getDoc(doc(db, 'settings', 'profile')).then(docSnap => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.displayName) nameInput.value = data.displayName;
+                    if (data.avatarUrl) avatarImg.src = data.avatarUrl;
+                }
+            });
+
+            // Preview avatar on file select
+            avatarInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (ev) => { avatarImg.src = ev.target.result; };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Save profile
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                statusEl.classList.remove('hidden', 'text-red-600', 'text-green-600');
+                statusEl.classList.add('text-stone-500');
+                statusEl.textContent = 'Saving...';
+
+                try {
+                    const updateData = { displayName: nameInput.value.trim() };
+
+                    if (avatarInput.files.length > 0) {
+                        const file = avatarInput.files[0];
+                        const avatarRef = ref(storage, `profile/avatar_${Date.now()}_${file.name}`);
+                        await uploadBytes(avatarRef, file);
+                        updateData.avatarUrl = await getDownloadURL(avatarRef);
+                    }
+
+                    const { setDoc } = await import('https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js');
+                    await setDoc(doc(db, 'settings', 'profile'), updateData, { merge: true });
+
+                    statusEl.classList.replace('text-stone-500', 'text-green-600');
+                    statusEl.textContent = 'Profile saved successfully!';
+                } catch (error) {
+                    console.error('Error saving profile:', error);
+                    statusEl.classList.replace('text-stone-500', 'text-red-600');
+                    statusEl.textContent = 'Error: ' + error.message;
+                }
+            });
         }
     }
 
