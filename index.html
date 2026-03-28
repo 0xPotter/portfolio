@@ -121,8 +121,13 @@
 <!-- 3 columns of images injected by index.js -->
 </div>
 <div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
-<!-- Interactive video title controlled by cursor -->
-<video id="hero-video" class="w-[85%] max-w-[800px] h-auto pointer-events-none select-none" muted playsinline preload="auto" src="title_blur.webm"></video>
+<!-- Canvas renders video frames with transparency -->
+<canvas id="hero-canvas" class="w-[90%] max-w-[860px] h-auto pointer-events-none select-none" width="960" height="540"></canvas>
+<!-- Hidden video source -->
+<video id="hero-video" class="hidden" muted playsinline preload="auto" crossorigin="anonymous">
+  <source src="title_blur.mp4" type='video/mp4; codecs="hvc1"'>
+  <source src="title_blur.webm" type="video/webm">
+</video>
 <p class="mt-4 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
 <div class="absolute bottom-12 animate-bounce opacity-40">
 <span class="material-symbols-outlined text-4xl" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
@@ -131,58 +136,74 @@
 <script>
 (function() {
   const video = document.getElementById('hero-video');
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
   const hero = document.querySelector('section');
-  let targetTime = 0, currentTime = 0;
-  let isHovering = false, running = false;
+  
+  let targetTime = 0, smoothTime = 0;
+  let isHovering = false, isMobile = false;
+  let seeking = false, ready = false;
 
-  video.addEventListener('loadedmetadata', () => {
-    // Start at the middle frame
-    video.currentTime = video.duration / 2;
-    currentTime = video.duration / 2;
-    targetTime = video.duration / 2;
+  // Draw current video frame to canvas
+  function drawFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  }
 
-    // Mobile: auto-play a gentle loop
-    if ('ontouchstart' in window) {
-      let t = 0;
-      function mobileLoop() {
-        t += 0.008;
-        video.currentTime = (Math.sin(t) * 0.5 + 0.5) * video.duration;
-        requestAnimationFrame(mobileLoop);
-      }
-      mobileLoop();
-    }
+  video.addEventListener('loadeddata', () => {
+    ready = true;
+    const mid = video.duration / 2;
+    video.currentTime = mid;
+    smoothTime = mid;
+    targetTime = mid;
   });
 
+  video.addEventListener('seeked', () => {
+    seeking = false;
+    drawFrame();
+  });
+
+  // Detect mobile
+  isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  // Desktop: mouse controls timeline
   hero.addEventListener('mousemove', (e) => {
+    if (isMobile || !ready) return;
     isHovering = true;
     const rect = hero.getBoundingClientRect();
-    // Map cursor X position to video timeline
-    const normalizedX = (e.clientX - rect.left) / rect.width;
-    targetTime = normalizedX * (video.duration || 12);
-
-    if (!running) { running = true; animate(); }
+    const nx = (e.clientX - rect.left) / rect.width;
+    targetTime = Math.max(0.01, nx * video.duration);
   });
 
   hero.addEventListener('mouseleave', () => {
     isHovering = false;
-    // Gently return to middle
-    targetTime = (video.duration || 12) / 2;
+    if (ready) targetTime = video.duration / 2;
   });
 
-  function animate() {
-    // Smooth lerp
-    currentTime += (targetTime - currentTime) * 0.08;
-    
-    // Clamp to valid range
-    const t = Math.max(0, Math.min(currentTime, (video.duration || 12) - 0.01));
-    video.currentTime = t;
+  // Main animation loop
+  function loop() {
+    requestAnimationFrame(loop);
+    if (!ready) return;
 
-    if (Math.abs(currentTime - targetTime) < 0.001 && !isHovering) {
-      running = false;
-      return;
+    if (isMobile) {
+      // Mobile: gentle auto oscillation
+      const t = performance.now() * 0.0004;
+      const target = (Math.sin(t) * 0.5 + 0.5) * video.duration;
+      smoothTime += (target - smoothTime) * 0.05;
+    } else {
+      // Desktop: lerp toward cursor target
+      smoothTime += (targetTime - smoothTime) * 0.07;
     }
-    requestAnimationFrame(animate);
+
+    const seekTo = Math.max(0, Math.min(smoothTime, video.duration - 0.01));
+    
+    if (!seeking && Math.abs(video.currentTime - seekTo) > 0.02) {
+      seeking = true;
+      video.currentTime = seekTo;
+    }
   }
+
+  loop();
 })();
 </script>
 </section>
