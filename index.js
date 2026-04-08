@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Determine the visual for the masonry grid
             let gridVisual = '';
             if (data.imageUrl) {
-                gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}">`;
+                gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${data.title}" src="${data.imageUrl}" loading="lazy" decoding="async">`;
             } else if (data.videoUrl) {
                 const ytMatch = data.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
                 const viMatch = data.videoUrl.match(/vimeo\.com\/(\d+)/);
@@ -72,17 +72,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Replace static grid with live data
         masonryContainer.innerHTML = html;
 
-        // Auto-fill hero section with live project images
+        // Auto-fill hero section with live project images (only 6 images, blurred anyway)
         if (allImages.length > 0 && heroBg) {
-            const aspects = ['aspect-[3/4]', 'aspect-square', 'aspect-[4/3]', 'aspect-[3/4]'];
+            const aspects = ['aspect-[3/4]', 'aspect-[4/3]'];
             const colClasses = ['animate-float', 'animate-float-reverse', 'animate-float'];
             let heroBgHtml = '';
             colClasses.forEach((anim, colIndex) => {
                 const hideOnMobile = colIndex === 2 ? 'hidden md:flex' : '';
                 let colHtml = `<div class="${hideOnMobile} flex-1 flex flex-col gap-4 ${anim}">`;
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < 2; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    colHtml += `<img class="w-full ${aspects[i]} object-cover opacity-0 transition-opacity duration-1000" onload="this.classList.remove('opacity-0')" src="${randomImg}" loading="eager" decoding="async">`;
+                    colHtml += `<img class="w-full ${aspects[i]} object-cover opacity-0 transition-opacity duration-1000" onload="this.classList.remove('opacity-0')" src="${randomImg}" loading="lazy" decoding="async">`;
                 }
                 colHtml += '</div>';
                 heroBgHtml += colHtml;

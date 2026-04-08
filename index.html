@@ -2,8 +2,20 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>PORTAFOLIO | JC</title>
+<!-- Preconnect to all external CDNs for faster loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.tailwindcss.com">
+<link rel="preconnect" href="https://esm.sh">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
+<!-- Fonts: only load the weights we actually use (bold + light) and use display=swap -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&family=Material+Symbols+Outlined:wght,FILL@300,0&display=swap" rel="stylesheet">
+<!-- Tailwind CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<!-- Preload main JS module -->
+<link rel="modulepreload" href="./firebase-config.js">
+<link rel="modulepreload" href="./index.js">
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -112,21 +124,96 @@
         .hero-gradient {
             background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
         }
+        /* Anime.js text split styles */
+        #hero-title .char {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        #hero-title .char > span {
+            display: inline-block;
+            will-change: transform;
+        }
     </style>
 </head>
 <body class="bg-background font-body text-on-background antialiased selection:bg-primary selection:text-on-primary" data-mode="connect">
 <!-- Hero Banner — images injected dynamically from Firebase -->
-<section class="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-black flex items-center justify-center">
+<section id="hero-section" class="relative h-[60vh] md:h-[80vh] w-full overflow-hidden bg-black flex items-center justify-center">
 <div id="hero-bg" class="absolute inset-0 z-0 flex gap-4 opacity-40 blur-sm scale-110">
 <!-- 3 columns of images injected by index.js -->
 </div>
 <div class="absolute inset-0 z-10 hero-gradient flex flex-col items-center justify-center text-white px-6">
-<h1 class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold select-none">Portafolio</h1>
+<h1 id="hero-title" class="text-7xl md:text-9xl tracking-tight opacity-90 drop-shadow-2xl font-sans font-bold select-none">Portafolio</h1>
 <p class="mt-6 font-sans text-[11px] tracking-[0.4em] uppercase font-light opacity-60">BIENVENIDO</p>
 <div class="absolute bottom-12 animate-bounce opacity-40">
 <span class="material-symbols-outlined text-4xl" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
 </div>
 </div>
+<script type="module">
+import {
+  animate,
+  createScope,
+  createSpring,
+  createTimeline,
+  stagger,
+  text,
+} from 'https://esm.sh/animejs';
+
+createScope({
+  root: '#hero-section',
+}).add((scope) => {
+  const { root, methods } = scope;
+  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+  text.split('#hero-title', {
+    chars: {
+      class: 'char',
+      clone: 'top',
+      wrap: 'clip',
+    },
+  });
+
+  const ease = createSpring({ stiffness: 90, damping: 11 });
+
+  scope.add('onEnter', () => {
+    createTimeline().add('.char > span', {
+      y: '100%',
+      composition: 'blend',
+      ease,
+    }, stagger(10, { use: 'data-char', from: 'random' }));
+  });
+
+  scope.add('onLeave', () => {
+    createTimeline().add('.char > span', {
+      y: '0%',
+      composition: 'blend',
+      ease,
+    }, stagger(10, { use: 'data-char', from: 'random' }));
+  });
+
+  if (isMobile) {
+    // Mobile: auto-loop the rain effect
+    let isRaining = false;
+    function mobileLoop() {
+      if (!isRaining) {
+        isRaining = true;
+        methods.onEnter();
+        setTimeout(() => {
+          methods.onLeave();
+          isRaining = false;
+        }, 1200);
+      }
+    }
+    // Initial trigger after a short delay
+    setTimeout(mobileLoop, 800);
+    setInterval(mobileLoop, 3000);
+  } else {
+    // Desktop: hover reactive
+    root.addEventListener('pointerenter', methods.onEnter);
+    root.addEventListener('pointerleave', methods.onLeave);
+  }
+});
+</script>
 </section>
 <!-- Top Navigation -->
 <nav class="sticky top-0 w-full z-50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex justify-between items-center px-4 md:px-6 py-3">
