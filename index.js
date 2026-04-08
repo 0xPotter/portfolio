@@ -92,6 +92,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         initializeFilters();
 
+        // Trigger GSAP ScrollTrigger animations for masonry items
+        if (typeof window.initMasonryAnimations === 'function') {
+            window.initMasonryAnimations();
+        }
+
         // Load creator profile for the modal
         try {
             const profileSnap = await getDoc(doc(db, 'settings', 'profile'));
