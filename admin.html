@@ -74,7 +74,7 @@
     <div class="flex items-center gap-4">
         <a href="index.html" class="text-xs uppercase tracking-widest font-bold">Public View</a>
         <div id="logout-btn" title="Logout" class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-stone-200 cursor-pointer hover:opacity-70 transition-opacity">
-            <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALMOdHTmPu_Lz1Z9WxIK4QrosUD3AFvU35qx4ldMXQA58klXho-vbf7YvfPQC931TshXOz1PKyQiOjn0Jdql0np0jkxu43CJFRA8tNowtRbpdMPTIoPEeBotMp9PdRzQlxlT0dxYKwhLtv_u9bdgPw1o9oNheJVvKZ6wiQAJ5rdz4bWCtnKS6-IKoU-gfKL1LYVLt8hltNQcrmZSELs43OFeCZK1mvtvTuSxVD4P8haacQOZajGATGPrnaufWRbV-ZqRsEFhjjhHf3">
+            <img id="header-avatar" alt="User Profile" class="w-full h-full object-cover" src="">
         </div>
     </div>
 </header>
@@ -106,13 +106,18 @@
         <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
             <div class="bg-surface-container-lowest p-8 border-l border-primary shadow-sm group hover:bg-stone-50 transition-all duration-300">
                 <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">photo_library</span></div>
-                <div class="text-4xl font-black mb-1">128</div>
-                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Live Gallery</div>
+                <div id="stat-published" class="text-4xl font-black mb-1">—</div>
+                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Published</div>
             </div>
             <div class="bg-surface-container-low p-8 shadow-sm group hover:bg-stone-50 transition-all duration-300">
-                <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">visibility</span></div>
-                <div class="text-4xl font-black mb-1">14.2K</div>
-                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Impressions</div>
+                <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">drafts</span></div>
+                <div id="stat-drafts" class="text-4xl font-black mb-1">—</div>
+                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Drafts</div>
+            </div>
+            <div class="bg-surface-container-low p-8 shadow-sm group hover:bg-stone-50 transition-all duration-300">
+                <div class="flex justify-between items-start mb-6"><span class="material-symbols-outlined text-stone-400">mail</span></div>
+                <div id="stat-messages" class="text-4xl font-black mb-1">—</div>
+                <div class="text-xs uppercase tracking-widest font-semibold text-on-surface-variant">Messages</div>
             </div>
         </section>
         <section>
@@ -120,17 +125,8 @@
                 <div><h3 class="text-xl font-bold tracking-tight">Recent Entries</h3><div class="w-12 h-1 bg-primary mt-2"></div></div>
                 <a href="#gallery" class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">View Archive</a>
             </div>
-            <div class="space-y-4">
-                <div class="group bg-white flex flex-col md:flex-row items-stretch md:items-center overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer">
-                    <div class="w-full md:w-32 h-40 md:h-24 overflow-hidden shrink-0"><img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgPMihwmoThvZXCgaZIPdkxDLFMIhrX8bKjVDDyO1RrHcNytNhKNZ1U55YKQr6slpUDkWUdy9m7aT_3V0e7lVLc7O3uGc-_NuJSyQoYk3V7pCyjmKgYxFnap35-Tg_8FLY5WtwxqbuIBa-LYoHYaYzZoO1U9yaxoCcGrMer_w73qHuNUwhOMOn99oGthTC8DuqaDlC4o-zYEaLI52o278yxRs27TqEQx15ZE1OYbKlU19_iwWnhAdUQNB99KjI_0MmPbJZfUlGq8N9"></div>
-                    <div class="p-6 flex-1 flex flex-col md:flex-row justify-between md:items-center">
-                        <div><span class="text-[10px] uppercase tracking-widest text-stone-400 font-bold">Branding / 2024</span><h4 class="text-lg font-bold tracking-tight mt-1">Ethereal Motion Identity</h4></div>
-                        <div class="flex items-center gap-6 mt-4 md:mt-0">
-                            <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-stone-300"></span><span class="text-[10px] uppercase font-bold tracking-widest text-stone-500">Draft</span></div>
-                            <div class="flex items-center gap-2"><button class="bg-primary text-white px-4 py-2 text-[10px] uppercase tracking-widest font-bold">Publish</button></div>
-                        </div>
-                    </div>
-                </div>
+            <div id="recent-entries" class="space-y-4">
+                <p class="py-12 text-center text-sm text-stone-400 font-bold uppercase tracking-widest">Loading...</p>
             </div>
         </section>
         <a href="#add-project" class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-white flex items-center justify-center rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all z-40"><span class="material-symbols-outlined">add</span></a>

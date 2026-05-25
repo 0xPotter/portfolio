@@ -1,10 +1,32 @@
-import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp, doc, deleteDoc, updateDoc, getDocs, orderBy, query, getDoc, sanitize } from './firebase-config.js';
+import { db, storage, auth, onAuthStateChanged, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp, doc, deleteDoc, updateDoc, getDocs, orderBy, query, getDoc, sanitize } from './firebase-config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+// Wait for auth before running any Firestore queries
+function waitForAuth() {
+    return new Promise((resolve) => {
+        const unsub = onAuthStateChanged(auth, (user) => {
+            unsub();
+            resolve(user);
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
     const appRoot = document.getElementById('app-root');
     const navLinks = document.querySelectorAll('.nav-link');
     const menuToggle = document.getElementById('menu-toggle');
     const sidebar = document.getElementById('sidebar');
+
+    // Wait for auth to resolve before anything
+    await waitForAuth();
+
+    // Load profile avatar for header
+    try {
+        const profileSnap = await getDoc(doc(db, 'settings', 'profile'));
+        if (profileSnap.exists() && profileSnap.data().avatarUrl) {
+            const headerAvatar = document.getElementById('header-avatar');
+            if (headerAvatar) headerAvatar.src = profileSnap.data().avatarUrl;
+        }
+    } catch(e) { console.warn('Could not load header avatar:', e); }
 
     // Drawer toggle for mobile
     menuToggle.addEventListener('click', () => {
@@ -45,6 +67,58 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initRouteLogic(hash, queryString) {
+        if (hash === 'dashboard') {
+            // Real stats
+            const q = query(collection(db, 'projects'), orderBy('createdAt', 'desc'));
+            getDocs(q).then(snapshot => {
+                let published = 0, drafts = 0;
+                snapshot.forEach(d => { if (d.data().published) published++; else drafts++; });
+                const pubEl = document.getElementById('stat-published');
+                const draftEl = document.getElementById('stat-drafts');
+                if (pubEl) pubEl.textContent = published;
+                if (draftEl) draftEl.textContent = drafts;
+
+                // Recent entries (last 3)
+                const container = document.getElementById('recent-entries');
+                if (!container) return;
+                let entries = [];
+                snapshot.forEach(d => entries.push({ id: d.id, ...d.data() }));
+                entries = entries.slice(0, 3);
+
+                if (entries.length === 0) {
+                    container.innerHTML = '<p class="py-12 text-center text-sm text-stone-400 font-bold uppercase tracking-widest">No projects yet.</p>';
+                    return;
+                }
+
+                let html = '';
+                entries.forEach(p => {
+                    const date = p.createdAt ? new Date(p.createdAt.toDate()).toLocaleDateString() : '';
+                    const img = p.imageUrl ? `<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${sanitize(p.imageUrl)}" loading="lazy">` : '<div class="w-full h-full bg-stone-200 flex items-center justify-center"><span class="material-symbols-outlined text-stone-400">image</span></div>';
+                    html += `
+                    <div class="group bg-white flex flex-col md:flex-row items-stretch md:items-center overflow-hidden transition-all duration-300 hover:shadow-md cursor-pointer" data-entry-id="${sanitize(p.id)}">
+                        <div class="w-full md:w-32 h-40 md:h-24 overflow-hidden shrink-0">${img}</div>
+                        <div class="p-6 flex-1 flex flex-col md:flex-row justify-between md:items-center">
+                            <div><span class="text-[10px] uppercase tracking-widest text-stone-400 font-bold">${sanitize(p.category)} / ${sanitize(date)}</span><h4 class="text-lg font-bold tracking-tight mt-1">${sanitize(p.title)}</h4></div>
+                            <div class="flex items-center gap-2 mt-4 md:mt-0"><span class="w-2 h-2 rounded-full ${p.published ? 'bg-green-500' : 'bg-stone-300'}"></span><span class="text-[10px] uppercase font-bold tracking-widest text-stone-500">${p.published ? 'Published' : 'Draft'}</span></div>
+                        </div>
+                    </div>`;
+                });
+                container.innerHTML = html;
+
+                // Click to edit
+                container.querySelectorAll('[data-entry-id]').forEach(el => {
+                    el.addEventListener('click', () => {
+                        window.location.hash = 'add-project?id=' + el.getAttribute('data-entry-id');
+                    });
+                });
+            }).catch(err => console.error('Dashboard load error:', err));
+
+            // Messages count
+            getDocs(collection(db, 'messages')).then(snap => {
+                const msgEl = document.getElementById('stat-messages');
+                if (msgEl) msgEl.textContent = snap.size;
+            }).catch(() => {});
+        }
         if (hash === 'gallery') {
             const tbody = document.getElementById('projects-table-body');
             if(tbody) {
