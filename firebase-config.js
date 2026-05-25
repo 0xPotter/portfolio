@@ -17,12 +17,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-// App Check — Firebase Console > App Check > Register reCAPTCHA Enterprise > paste key
-const RECAPTCHA_SITE_KEY = '6LcrFPwsAAAAAAKLXFoA38yf0WOEBeck-vbc1W2W';
-initializeAppCheck(app, {
-  provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_SITE_KEY),
-  isTokenAutoRefreshEnabled: true
-});
+// App Check — fails gracefully if reCAPTCHA is blocked (ad blockers, Brave shields)
+try {
+  const RECAPTCHA_SITE_KEY = '6LcrFPwsAAAAAAKLXFoA38yf0WOEBeck-vbc1W2W';
+  initializeAppCheck(app, {
+    provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_SITE_KEY),
+    isTokenAutoRefreshEnabled: true
+  });
+} catch (e) {
+  console.warn('App Check init skipped:', e.message);
+}
 
 const auth = getAuth(app);
 const db = getFirestore(app);
