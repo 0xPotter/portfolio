@@ -55,12 +55,15 @@
     </div>
 </body>
 <script type="module">
-    import { auth, provider, signInWithPopup, onAuthStateChanged } from './firebase-config.js';
+    import { auth, provider, signInWithPopup, signOut, onAuthStateChanged } from './firebase-config.js';
 
-    // Auto-redirect if already logged in
+    const ADMIN_EMAILS = ['jeremycampos2@gmail.com'];
+
     onAuthStateChanged(auth, (user) => {
-        if (user) {
+        if (user && ADMIN_EMAILS.includes(user.email.toLowerCase())) {
             window.location.replace('admin.html');
+        } else if (user) {
+            signOut(auth);
         }
     });
 
@@ -68,13 +71,17 @@
     loginBtn.addEventListener('click', async () => {
         const originalText = loginBtn.innerHTML;
         loginBtn.innerHTML = '<span class="text-[11px] font-bold uppercase tracking-widest text-zinc-400">Authenticating...</span>';
-        
+
         try {
-            await signInWithPopup(auth, provider);
-            // The onAuthStateChanged listener will handle the redirect
+            const result = await signInWithPopup(auth, provider);
+            if (!ADMIN_EMAILS.includes(result.user.email.toLowerCase())) {
+                await signOut(auth);
+                alert('Acceso denegado. Esta cuenta no tiene permisos de administrador.');
+                loginBtn.innerHTML = originalText;
+            }
         } catch (error) {
             console.error("Login failed", error);
-            alert("Acceso denegado. Asegúrate de configurar este dominio (" + window.location.hostname + ") en Firebase > Authentication > Settings > Dominios Autorizados.");
+            alert("Error de autenticación. Verifica que el dominio esté autorizado en Firebase.");
             loginBtn.innerHTML = originalText;
         }
     });

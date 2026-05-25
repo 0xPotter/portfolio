@@ -1,4 +1,4 @@
-import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp, doc, deleteDoc, updateDoc, getDocs, orderBy, query, getDoc } from './firebase-config.js';
+import { db, storage, collection, addDoc, ref, uploadBytes, getDownloadURL, serverTimestamp, doc, deleteDoc, updateDoc, getDocs, orderBy, query, getDoc, sanitize } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const appRoot = document.getElementById('app-root');
@@ -58,31 +58,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     snapshot.forEach(docSnap => {
                         const data = docSnap.data();
                         const id = docSnap.id;
+                        const safeId = sanitize(id);
                         const date = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'N/A';
                         html += `
                         <tr class="group hover:bg-stone-50 transition-colors">
                             <td class="py-4 px-6 border-b border-stone-100">
-                                <div class="w-16 h-10 bg-stone-200 rounded-sm overflow-hidden bg-cover bg-center" style="background-image: url('${data.imageUrl}')"></div>
+                                <div class="w-16 h-10 bg-stone-200 rounded-sm overflow-hidden bg-cover bg-center" style="background-image: url('${sanitize(data.imageUrl || '')}')"></div>
                             </td>
                             <td class="py-4 px-6 border-b border-stone-100">
-                                <p class="font-bold text-sm tracking-tight">${data.title}</p>
-                                <p class="text-[10px] uppercase tracking-widest text-stone-400 mt-1">${date}</p>
+                                <p class="font-bold text-sm tracking-tight">${sanitize(data.title)}</p>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-400 mt-1">${sanitize(date)}</p>
                             </td>
                             <td class="py-4 px-6 border-b border-stone-100 hidden md:table-cell">
-                                <span class="bg-surface-container-high px-2 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">${data.category}</span>
+                                <span class="bg-surface-container-high px-2 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest">${sanitize(data.category)}</span>
                             </td>
                             <td class="py-4 px-6 border-b border-stone-100 hidden sm:table-cell">
                                 <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full ${data.published ? 'bg-green-500' : 'bg-stone-300'}"></span><span class="text-[10px] uppercase font-bold tracking-widest text-stone-500">${data.published ? 'Published' : 'Draft'}</span></div>
                             </td>
                             <td class="py-4 px-6 border-b border-stone-100 text-right">
                                 <div class="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button onclick="window.location.hash='add-project?id=${id}'" class="text-stone-400 hover:text-black transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-                                    <button data-delete-id="${id}" class="delete-btn text-stone-400 hover:text-red-600 transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+                                    <button data-edit-id="${safeId}" class="edit-btn text-stone-400 hover:text-black transition-colors" title="Edit"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+                                    <button data-delete-id="${safeId}" class="delete-btn text-stone-400 hover:text-red-600 transition-colors" title="Delete"><span class="material-symbols-outlined text-[18px]">delete</span></button>
                                 </div>
                             </td>
                         </tr>`;
                     });
                     tbody.innerHTML = html;
+
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const id = btn.getAttribute('data-edit-id');
+                            window.location.hash = 'add-project?id=' + id;
+                        });
+                    });
 
                     document.querySelectorAll('.delete-btn').forEach(btn => {
                         btn.addEventListener('click', async (e) => {

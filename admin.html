@@ -40,12 +40,15 @@
     <script type="module">
         import { auth, onAuthStateChanged, signOut } from './firebase-config.js';
 
-        // Protected Route Guard
+        const ADMIN_EMAILS = ['jeremycampos2@gmail.com'];
+
+        // Protected Route Guard + Admin Whitelist
         onAuthStateChanged(auth, (user) => {
             if (!user) {
                 window.location.replace('login.html');
-            } else {
-                console.log("Admin session active:", user.email);
+            } else if (!ADMIN_EMAILS.includes(user.email.toLowerCase())) {
+                alert('Access denied. Not an admin account.');
+                signOut(auth).then(() => window.location.replace('login.html'));
             }
         });
 

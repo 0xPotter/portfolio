@@ -92,21 +92,63 @@
   <span class="font-sans text-[10px] tracking-widest uppercase text-zinc-400">© 2026 Jeremy Campos</span>
 </footer>
 
-<script>
-  document.getElementById('contact-form').addEventListener('submit', (e) => {
+<script type="module">
+  import { db, collection, addDoc, serverTimestamp } from './firebase-config.js';
+
+  // Client-side rate limit: 1 message per 60 seconds
+  const RATE_LIMIT_KEY = 'contact_last_sent';
+  const RATE_LIMIT_MS = 60000;
+
+  document.getElementById('contact-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const status = document.getElementById('form-status');
     const form = e.target;
-    // Build mailto link as simple fallback
-    const name = form.querySelector('input[type="text"]').value;
-    const email = form.querySelector('input[type="email"]').value;
-    const message = form.querySelector('textarea').value;
-    const subject = encodeURIComponent(`Nuevo contacto de ${name}`);
-    const body = encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\n${message}`);
-    window.location.href = `mailto:hola@jeremycampos.com?subject=${subject}&body=${body}`;
-    status.textContent = 'Abriendo tu cliente de correo...';
-    status.classList.remove('hidden');
-    status.classList.add('text-green-600');
+    const btn = form.querySelector('button[type="submit"]');
+
+    // Rate limit check
+    const lastSent = parseInt(localStorage.getItem(RATE_LIMIT_KEY) || '0');
+    if (Date.now() - lastSent < RATE_LIMIT_MS) {
+      status.textContent = 'Espera un momento antes de enviar otro mensaje.';
+      status.classList.remove('hidden', 'text-green-600');
+      status.classList.add('text-red-500');
+      return;
+    }
+
+    const name = form.querySelector('input[type="text"]').value.trim();
+    const email = form.querySelector('input[type="email"]').value.trim();
+    const message = form.querySelector('textarea').value.trim();
+
+    // Basic validation
+    if (!name || !email || !message) return;
+    if (name.length > 200 || email.length > 200 || message.length > 5000) {
+      status.textContent = 'Mensaje demasiado largo.';
+      status.classList.remove('hidden', 'text-green-600');
+      status.classList.add('text-red-500');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    status.classList.remove('hidden', 'text-green-600', 'text-red-500');
+
+    try {
+      await addDoc(collection(db, 'messages'), {
+        name, email, message,
+        createdAt: serverTimestamp(),
+        read: false
+      });
+      localStorage.setItem(RATE_LIMIT_KEY, Date.now().toString());
+      status.textContent = 'Mensaje enviado correctamente.';
+      status.classList.add('text-green-600');
+      form.reset();
+    } catch (err) {
+      console.error('Error sending message:', err);
+      status.textContent = 'Error al enviar. Intenta de nuevo.';
+      status.classList.add('text-red-500');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar Mensaje';
+    }
   });
 </script>
 

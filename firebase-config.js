@@ -2,7 +2,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebas
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp, doc, deleteDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app-check.js";
 
+// Client-side Firebase keys — safe to expose.
+// Protection via: App Check + Firestore Rules + Storage Rules + Admin Whitelist.
 const firebaseConfig = {
   apiKey: "AIzaSyAXXnf9FfM6o8tmFwV8JyzTxnh0U6lqTV8",
   authDomain: "portfolio-e7720.firebaseapp.com",
@@ -13,9 +16,25 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+// App Check — Firebase Console > App Check > Register reCAPTCHA Enterprise > paste key
+const RECAPTCHA_SITE_KEY = '6LcrFPwsAAAAAAKLXFoA38yf0WOEBeck-vbc1W2W';
+initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_SITE_KEY),
+  isTokenAutoRefreshEnabled: true
+});
+
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
 
-export { app, auth, db, storage, provider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp, doc, deleteDoc, updateDoc, getDoc, ref, uploadBytes, getDownloadURL };
+// XSS sanitization helper — used across all pages
+function sanitize(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+export { app, auth, db, storage, provider, signInWithPopup, signOut, onAuthStateChanged, collection, addDoc, getDocs, query, where, orderBy, serverTimestamp, doc, deleteDoc, updateDoc, getDoc, ref, uploadBytes, getDownloadURL, sanitize };
