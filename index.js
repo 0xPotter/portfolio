@@ -1,4 +1,4 @@
-import { db, collection, getDocs, query, orderBy, doc, getDoc, sanitize } from './firebase-config.js';
+import { db, collection, getDocs, query, orderBy, where, doc, getDoc, sanitize } from './firebase-config.js';
 
 window.projectsData = {};
 
@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const q = query(
             collection(db, 'projects'),
+            where('published', '==', true),
             orderBy('createdAt', 'desc')
         );
         const querySnapshot = await getDocs(q);
