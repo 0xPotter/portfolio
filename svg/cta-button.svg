@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 474 219">
+  <defs>
+    <style>
+      .cls-1 {
+        filter: url(#drop-shadow-1);
+      }
+
+      .cls-2 {
+        font-family: Helvetica, Helvetica;
+        font-size: 34.12px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        letter-spacing: .86em;
+      }
+
+      .cls-5 {
+        letter-spacing: 0em;
+      }
+
+      .cls-6 {
+        fill: #ef8035;
+        stroke-width: 10px;
+      }
+
+      .cls-6, .cls-3 {
+        stroke: #e0dcca;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-3 {
+        stroke-width: 2px;
+      }
+
+      .cls-7 {
+        letter-spacing: -.24em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.02em;
+      }
+    </style>
+    <filter id="drop-shadow-1" x="0" y="0" width="474" height="219" filterUnits="userSpaceOnUse">
+      <feOffset dx="7" dy="7"/>
+      <feGaussianBlur result="blur" stdDeviation="10"/>
+      <feFlood flood-color="#000" flood-opacity=".75"/>
+      <feComposite in2="blur" operator="in"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g>
+      <g class="cls-1">
+        <rect class="cls-6" x="31.36" y="49.65" width="397.4" height="105.36" rx="19.13" ry="19.13" transform="translate(-10.61 28.33) rotate(-6.89)"/>
+      </g>
+      <text class="cls-2" transform="translate(78.63 114.25) rotate(-6.89)"><tspan x="0" y="0">¿TIENES </tspan><tspan class="cls-7" x="153.54" y="0">	</tspan><tspan class="cls-4" x="154.9" y="0" xml:space="preserve">		</tspan><tspan x="232.34" y="0">UN</tspan><tspan class="cls-4" x="0" y="40.94" xml:space="preserve">		</tspan><tspan class="cls-5" x="77.45" y="40.94">PROYEC</tspan><tspan class="cls-8" x="221.53" y="40.94">T</tspan><tspan x="241.77" y="40.94">O?</tspan></text>
+      <line class="cls-3" x1="227.9" y1="84.44" x2="297.64" y2="76.01"/>
+      <line class="cls-3" x1="81.24" y1="144.04" x2="150.98" y2="135.61"/>
+    </g>
+  </g>
+</svg>

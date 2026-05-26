@@ -3,7 +3,7 @@ import { db, collection, getDocs, query, orderBy, where, doc, getDoc, sanitize }
 window.projectsData = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const masonryContainer = document.querySelector('.masonry-grid');
+    const masonryContainer = document.getElementById('masonry-grid');
     const heroBg = document.getElementById('hero-bg');
 
     try {
@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         let html = '';
 
         let projects = [];
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
             if (!data.published) return;
             if(data.imageUrl) allImages.push(data.imageUrl);
-            window.projectsData[doc.id] = data;
-            projects.push({ id: doc.id, data });
+            window.projectsData[docSnap.id] = data;
+            projects.push({ id: docSnap.id, data });
         });
 
         // Fisher-Yates shuffle
@@ -45,33 +45,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             let gridVisual = '';
             if (data.imageUrl) {
-                gridVisual = `<img class="w-full h-auto transition-all duration-700 ease-out group-hover:scale-[1.03]" alt="${safeTitle}" src="${sanitize(data.imageUrl)}" loading="lazy" decoding="async">`;
+                gridVisual = `<img alt="${safeTitle}" src="${sanitize(data.imageUrl)}" loading="lazy" decoding="async">`;
             } else if (data.videoUrl) {
                 const embedUrl = getSafeEmbedUrl(data.videoUrl);
                 if (embedUrl) {
-                    gridVisual = `<iframe class="w-full aspect-video" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>`;
+                    gridVisual = `<iframe style="width:100%;aspect-ratio:16/9;" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>`;
                 } else {
-                    gridVisual = `<div class="w-full aspect-square bg-zinc-100 flex items-center justify-center"><span class="material-symbols-outlined text-zinc-400 text-4xl">play_circle</span></div>`;
+                    gridVisual = `<div style="width:100%;aspect-ratio:1;background:#f4f4f5;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:2.5rem;color:#a1a1aa;">play_circle</span></div>`;
                 }
             } else {
-                gridVisual = `<div class="w-full aspect-square bg-zinc-100 flex items-center justify-center"><span class="material-symbols-outlined text-zinc-400 text-4xl">image</span></div>`;
+                gridVisual = `<div style="width:100%;aspect-ratio:1;background:#f4f4f5;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:2.5rem;color:#a1a1aa;">image</span></div>`;
             }
 
             html += `
-            <div class="masonry-item group relative bg-surface-container transition-opacity duration-500 cursor-pointer" data-category="${catLabel}" data-project-id="${safeId}">
-                <div class="block w-full h-full overflow-hidden">
-                    ${gridVisual}
-                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6 backdrop-blur-[2px]">
-                        <p class="text-[10px] tracking-widest uppercase text-white font-medium">${safeTitle} / ${safeCategory}</p>
-                    </div>
+            <div class="card" data-category="${catLabel}" data-project-id="${safeId}">
+                ${gridVisual}
+                <div class="card-overlay">
+                    <p>${safeTitle} / ${safeCategory}</p>
                 </div>
             </div>`;
         });
 
         masonryContainer.innerHTML = html;
 
-        // Bind click events safely (no inline onclick)
-        document.querySelectorAll('.masonry-item[data-project-id]').forEach(item => {
+        // Bind click events
+        document.querySelectorAll('.card[data-project-id]').forEach(item => {
             item.addEventListener('click', () => {
                 const projectId = item.getAttribute('data-project-id');
                 openProjectModal(projectId);
@@ -80,20 +78,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Hero background images
         if (allImages.length > 0 && heroBg) {
-            const aspects = ['aspect-[3/4]', 'aspect-[4/3]'];
-            const colClasses = ['animate-float', 'animate-float-reverse', 'animate-float'];
+            const colAnims = ['animate-float', 'animate-float-reverse', 'animate-float'];
             let heroBgHtml = '';
-            colClasses.forEach((anim, colIndex) => {
-                const hideOnMobile = colIndex === 2 ? 'hidden md:flex' : '';
-                let colHtml = `<div class="${hideOnMobile} flex-1 flex flex-col gap-4 ${anim}">`;
+            colAnims.forEach((anim, colIndex) => {
+                const hideOnMobile = colIndex === 2 ? 'style="display:none;"' : '';
+                let colHtml = `<div class="hero-col ${anim}" ${hideOnMobile}>`;
                 for (let i = 0; i < 2; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    colHtml += `<img class="w-full ${aspects[i]} object-cover opacity-0 transition-opacity duration-1000" onload="this.classList.remove('opacity-0')" src="${sanitize(randomImg)}" loading="lazy" decoding="async">`;
+                    colHtml += `<img src="${sanitize(randomImg)}" loading="lazy" decoding="async" alt="">`;
                 }
                 colHtml += '</div>';
                 heroBgHtml += colHtml;
             });
             heroBg.innerHTML = heroBgHtml;
+
+            // Image trail — use project images
+            initImageTrail(allImages);
         }
 
         initializeFilters();
@@ -126,56 +126,130 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
+/* ── Image Trail ── */
+function initImageTrail(allImages) {
+    const trailContainer = document.getElementById('image-trail');
+    if (!trailContainer || allImages.length === 0) return;
+
+    const POOL_SIZE = 12;
+    const pool = [];
+    let imgIndex = 0;
+    let lastX = 0, lastY = 0;
+    const DISTANCE_THRESHOLD = 80;
+
+    // Shuffle a subset for the trail
+    const trailImages = allImages.slice().sort(() => Math.random() - 0.5).slice(0, 8);
+    if (trailImages.length === 0) return;
+
+    // Pre-create image pool
+    for (let i = 0; i < POOL_SIZE; i++) {
+        const img = document.createElement('img');
+        img.className = 'trail-img';
+        img.src = trailImages[i % trailImages.length];
+        trailContainer.appendChild(img);
+        pool.push(img);
+    }
+
+    function spawnTrailImage(x, y) {
+        const img = pool[imgIndex % POOL_SIZE];
+        img.src = trailImages[imgIndex % trailImages.length];
+        imgIndex++;
+
+        gsap.killTweensOf(img);
+        gsap.set(img, {
+            left: x - img.offsetWidth / 2,
+            top: y - img.offsetHeight / 2,
+            opacity: 1,
+            scale: 0.4,
+            rotation: (Math.random() - 0.5) * 20,
+            zIndex: imgIndex,
+        });
+
+        gsap.to(img, {
+            scale: 1,
+            duration: 0.5,
+            ease: 'back.out(1.7)',
+        });
+
+        gsap.to(img, {
+            opacity: 0,
+            scale: 0.2,
+            duration: 0.6,
+            delay: 0.8,
+            ease: 'power2.in',
+        });
+    }
+
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const dist = Math.hypot(x - lastX, y - lastY);
+
+            if (dist > DISTANCE_THRESHOLD) {
+                spawnTrailImage(x, y);
+                lastX = x;
+                lastY = y;
+            }
+        });
+    }
+}
+
+/* ── Filters ── */
 function initializeFilters() {
     const filterBtns = document.querySelectorAll('.filter-btn');
-    const masonryItems = document.querySelectorAll('.masonry-item');
-
-    const activeClasses = ['text-zinc-900', 'dark:text-zinc-50', 'font-bold', 'border-b', 'border-zinc-900', 'dark:border-zinc-50', 'pb-0.5'];
-    const inactiveClasses = ['text-zinc-500', 'dark:text-zinc-400'];
+    const cards = () => document.querySelectorAll('.card[data-category]');
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
+            // Update active styles
             filterBtns.forEach(b => {
-                b.classList.remove(...activeClasses);
-                b.classList.add(...inactiveClasses);
+                b.style.fontWeight = '500';
+                b.style.color = '#a1a1aa';
+                b.style.borderBottom = '1px solid transparent';
             });
-            btn.classList.remove(...inactiveClasses);
-            btn.classList.add(...activeClasses);
+            btn.style.fontWeight = '700';
+            btn.style.color = '#18181b';
+            btn.style.borderBottom = '1px solid #18181b';
 
             const filterValue = btn.getAttribute('data-filter');
-            masonryItems.forEach(item => {
-                const isMatch = filterValue === 'all' || item.getAttribute('data-category').toLowerCase() === filterValue;
+            cards().forEach(card => {
+                const isMatch = filterValue === 'all' || card.getAttribute('data-category') === filterValue;
                 if (isMatch) {
-                    item.style.display = 'block';
-                    setTimeout(() => item.classList.remove('opacity-0'), 10);
+                    card.style.display = 'block';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 10);
                 } else {
-                    item.classList.add('opacity-0');
-                    setTimeout(() => item.style.display = 'none', 300);
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(60px)';
+                    setTimeout(() => card.style.display = 'none', 300);
                 }
             });
         });
     });
 }
 
-// Only allow YouTube and Vimeo embeds — reject arbitrary URLs
+// Only allow YouTube and Vimeo embeds
 function getSafeEmbedUrl(url) {
     if (!url) return null;
     const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
     if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`;
     const viMatch = url.match(/vimeo\.com\/(\d+)/);
     if (viMatch) return `https://player.vimeo.com/video/${viMatch[1]}`;
-    return null; // reject unknown URLs
+    return null;
 }
 
 function openProjectModal(id) {
     const data = window.projectsData[id];
     if (!data) return;
 
-    // Use textContent for text, sanitize for attributes
     document.getElementById('modal-category').textContent = data.category || '';
     document.getElementById('modal-title').textContent = data.title;
 
-    // Narrative: sanitize then convert newlines to <br>
     const narrativeEl = document.getElementById('modal-narrative');
     narrativeEl.innerHTML = sanitize(data.narrative || '').replace(/\n/g, '<br>');
 
@@ -191,20 +265,20 @@ function openProjectModal(id) {
     const galleryContainer = document.getElementById('modal-gallery');
     if (data.galleryUrls && data.galleryUrls.length > 0) {
         galleryContainer.classList.remove('hidden');
-        let html = '';
+        let ghtml = '';
         data.galleryUrls.forEach((url) => {
-            html += `
+            ghtml += `
                 <div class="w-full h-full flex justify-center bg-transparent relative">
                     <img class="max-w-full max-h-[85vh] h-auto object-contain shadow-2xl rounded-lg hover:scale-[1.01] transition-transform duration-1000 ease-out" src="${sanitize(url)}" alt="Secondary Visual">
                 </div>`;
         });
-        galleryContainer.innerHTML = html;
+        galleryContainer.innerHTML = ghtml;
     } else {
         galleryContainer.innerHTML = '';
         galleryContainer.classList.add('hidden');
     }
 
-    // Video embed — safe URLs only
+    // Video embed
     const existingVideo = document.getElementById('modal-video-embed');
     if (existingVideo) existingVideo.remove();
 
@@ -221,7 +295,7 @@ function openProjectModal(id) {
         heroImg.parentElement.insertBefore(iframe, heroImg.nextSibling);
     }
 
-    // Website button — validate URL protocol
+    // Website button
     const existingBtn = document.getElementById('modal-visit-web');
     if (existingBtn) existingBtn.remove();
 

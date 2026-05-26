@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1880.22 404.16">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        font-size: 297.96px;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-5 {
+        font-family: Helvetica-Bold, Helvetica;
+        font-weight: 700;
+      }
+
+      .cls-6 {
+        fill: #8b8a83;
+      }
+
+      .cls-7 {
+        font-size: 286px;
+      }
+
+      .cls-7, .cls-8, .cls-9 {
+        font-family: Minecraft, Minecraft;
+      }
+
+      .cls-8, .cls-9 {
+        font-size: 290px;
+      }
+
+      .cls-9 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-3 {
+        font-family: Amador, Amador;
+        letter-spacing: .02em;
+      }
+
+      .cls-4 {
+        letter-spacing: .04em;
+      }
+
+      .cls-5 {
+        letter-spacing: .06em;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <text class="cls-6" transform="translate(0 260.86)"><tspan class="cls-4" x="0" y="0">L</tspan><tspan class="cls-7" x="193.92" y="0">E</tspan><tspan class="cls-2" x="390.55" y="0">T&apos;</tspan><tspan class="cls-8" x="643.4" y="0">S</tspan><tspan class="cls-1" x="824.65" y="0"> </tspan><tspan class="cls-3" x="907.43" y="0">W</tspan><tspan class="cls-5" x="1191.38" y="0">O</tspan><tspan class="cls-9" x="1441.02" y="0">R</tspan><tspan class="cls-2" x="1665.04" y="0">K</tspan></text>
+  </g>
+</svg>
