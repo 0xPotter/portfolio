@@ -119,25 +119,60 @@
   fill: #c8c7c0;
 }
 
-/* ── Image Trail ── */
-.image-trail {
+/* ── 3D Carousel ── */
+.carousel-3d-wrapper {
   position: absolute;
   inset: 0;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  perspective: 1000px;
   overflow: hidden;
 }
 
-.trail-img {
+.carousel-3d {
+  position: relative;
+  width: clamp(140px, 16vw, 200px);
+  height: clamp(90px, 10vw, 130px);
+  transform-style: preserve-3d;
+  animation: carousel-rotate 25s infinite linear;
+  pointer-events: auto;
+}
+
+.carousel-3d:hover {
+  animation-play-state: paused;
+}
+
+@keyframes carousel-rotate {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+.carousel-3d figure {
   position: absolute;
-  width: clamp(120px, 14vw, 200px);
-  height: clamp(160px, 18vw, 260px);
+  top: 50%;
+  left: 50%;
+  width: clamp(140px, 16vw, 200px);
+  height: clamp(90px, 10vw, 130px);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+  overflow: hidden;
+  backface-visibility: visible;
+  transition: transform 0.5s ease;
+}
+
+.carousel-3d figure:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.carousel-3d figure img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 4px;
-  opacity: 0;
-  transform: scale(0);
-  pointer-events: none;
-  will-change: transform, opacity;
+  border-radius: 6px;
 }
 
 /* ── Filter Nav ── */
@@ -327,8 +362,10 @@
   <!-- Layer 0: Blurred project images (injected by index.js) -->
   <div class="hero-bg" id="hero-bg"></div>
 
-  <!-- Layer 0.5: Image trail -->
-  <div class="image-trail" id="image-trail"></div>
+  <!-- Layer 0.5: 3D Carousel -->
+  <div class="carousel-3d-wrapper">
+    <div class="carousel-3d" id="carousel-3d"></div>
+  </div>
 
   <!-- Layer 1: Halftone texture overlay -->
   <div class="halftone-overlay"></div>

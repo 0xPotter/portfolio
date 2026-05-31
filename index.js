@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             heroBg.innerHTML = heroBgHtml;
 
-            // Image trail — use project images
-            initImageTrail(allImages);
+            // 3D Carousel — use project images
+            init3DCarousel(allImages);
         }
 
         initializeFilters();
@@ -134,77 +134,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-/* ── Image Trail ── */
-function initImageTrail(allImages) {
-    const trailContainer = document.getElementById('image-trail');
-    if (!trailContainer || allImages.length === 0) return;
+/* ── 3D Carousel ── */
+function init3DCarousel(allImages) {
+    const container = document.getElementById('carousel-3d');
+    if (!container || allImages.length === 0) return;
 
-    const POOL_SIZE = 12;
-    const pool = [];
-    let imgIndex = 0;
-    let lastX = 0, lastY = 0;
-    const DISTANCE_THRESHOLD = 80;
+    // Shuffle and pick up to 10 images
+    const carouselImages = allImages.slice().sort(() => Math.random() - 0.5).slice(0, 10);
+    // Ensure minimum 3 items for a good ring
+    while (carouselImages.length < 3) {
+        carouselImages.push(carouselImages[carouselImages.length % allImages.length]);
+    }
 
-    // Shuffle a subset for the trail
-    const trailImages = allImages.slice().sort(() => Math.random() - 0.5).slice(0, 8);
-    if (trailImages.length === 0) return;
+    const total = carouselImages.length;
+    const spreadAngle = 360 / total;
+    const translateZ = Math.max(220, total * 30); // scale radius with item count
 
-    // Pre-create image pool (low priority — only visible on mouse interaction)
-    for (let i = 0; i < POOL_SIZE; i++) {
+    carouselImages.forEach((src, i) => {
+        const figure = document.createElement('figure');
+        const angle = spreadAngle * i;
+        figure.style.transform = `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px)`;
+
         const img = document.createElement('img');
-        img.className = 'trail-img';
+        img.src = sanitize(src);
+        img.alt = '';
         img.fetchPriority = 'low';
         img.loading = 'lazy';
-        img.src = trailImages[i % trailImages.length];
-        trailContainer.appendChild(img);
-        pool.push(img);
-    }
+        img.decoding = 'async';
 
-    function spawnTrailImage(x, y) {
-        const img = pool[imgIndex % POOL_SIZE];
-        img.src = trailImages[imgIndex % trailImages.length];
-        imgIndex++;
-
-        gsap.killTweensOf(img);
-        gsap.set(img, {
-            left: x - img.offsetWidth / 2,
-            top: y - img.offsetHeight / 2,
-            opacity: 1,
-            scale: 0.4,
-            rotation: (Math.random() - 0.5) * 20,
-            zIndex: imgIndex,
-        });
-
-        gsap.to(img, {
-            scale: 1,
-            duration: 0.5,
-            ease: 'back.out(1.7)',
-        });
-
-        gsap.to(img, {
-            opacity: 0,
-            scale: 0.2,
-            duration: 0.6,
-            delay: 0.8,
-            ease: 'power2.in',
-        });
-    }
-
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const dist = Math.hypot(x - lastX, y - lastY);
-
-            if (dist > DISTANCE_THRESHOLD) {
-                spawnTrailImage(x, y);
-                lastX = x;
-                lastY = y;
-            }
-        });
-    }
+        figure.appendChild(img);
+        container.appendChild(figure);
+    });
 }
 
 /* ── Filters ── */
