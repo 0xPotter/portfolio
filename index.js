@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             let gridVisual = '';
             if (data.imageUrl) {
-                gridVisual = `<img alt="${safeTitle}" src="${sanitize(data.imageUrl)}" loading="lazy" decoding="async">`;
+                gridVisual = `<img alt="${safeTitle}" src="${sanitize(data.imageUrl)}" loading="lazy" decoding="async" fetchpriority="low">`;
             } else if (data.videoUrl) {
                 const embedUrl = getSafeEmbedUrl(data.videoUrl);
                 if (embedUrl) {
@@ -78,6 +78,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Hero background images
         if (allImages.length > 0 && heroBg) {
+            // Preload first hero image for faster LCP
+            const firstHeroImg = allImages[Math.floor(Math.random() * allImages.length)];
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.as = 'image';
+            preloadLink.href = firstHeroImg;
+            document.head.appendChild(preloadLink);
+
             const colAnims = ['animate-float', 'animate-float-reverse', 'animate-float'];
             let heroBgHtml = '';
             colAnims.forEach((anim, colIndex) => {
@@ -85,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let colHtml = `<div class="hero-col ${anim}" ${hideOnMobile}>`;
                 for (let i = 0; i < 2; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    colHtml += `<img src="${sanitize(randomImg)}" loading="lazy" decoding="async" alt="">`;
+                    colHtml += `<img src="${sanitize(randomImg)}" fetchpriority="high" decoding="async" alt="">`;
                 }
                 colHtml += '</div>';
                 heroBgHtml += colHtml;
@@ -141,10 +149,12 @@ function initImageTrail(allImages) {
     const trailImages = allImages.slice().sort(() => Math.random() - 0.5).slice(0, 8);
     if (trailImages.length === 0) return;
 
-    // Pre-create image pool
+    // Pre-create image pool (low priority — only visible on mouse interaction)
     for (let i = 0; i < POOL_SIZE; i++) {
         const img = document.createElement('img');
         img.className = 'trail-img';
+        img.fetchPriority = 'low';
+        img.loading = 'lazy';
         img.src = trailImages[i % trailImages.length];
         trailContainer.appendChild(img);
         pool.push(img);
