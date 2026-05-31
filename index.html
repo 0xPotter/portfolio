@@ -134,8 +134,8 @@
 
 .carousel-3d {
   position: relative;
-  width: clamp(140px, 16vw, 200px);
-  height: clamp(90px, 10vw, 130px);
+  width: clamp(160px, 22vw, 320px);
+  height: clamp(200px, 16vw, 210px);
   transform-style: preserve-3d;
   animation: carousel-rotate 25s infinite linear;
   pointer-events: auto;
@@ -154,8 +154,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: clamp(140px, 16vw, 200px);
-  height: clamp(90px, 10vw, 130px);
+  width: clamp(160px, 22vw, 320px);
+  height: clamp(200px, 16vw, 210px);
   margin: 0;
   transform: translate(-50%, -50%);
   border-radius: 6px;
@@ -173,6 +173,15 @@
   height: 100%;
   object-fit: cover;
   border-radius: 6px;
+}
+
+/* Mobile: taller cards to fill more screen */
+@media (max-width: 768px) {
+  .carousel-3d,
+  .carousel-3d figure {
+    width: clamp(130px, 40vw, 180px);
+    height: clamp(180px, 50vw, 260px);
+  }
 }
 
 /* ── Filter Nav ── */

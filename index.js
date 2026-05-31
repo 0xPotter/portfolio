@@ -148,7 +148,8 @@ function init3DCarousel(allImages) {
 
     const total = carouselImages.length;
     const spreadAngle = 360 / total;
-    const translateZ = Math.max(220, total * 30); // scale radius with item count
+    const isMobile = window.innerWidth <= 768;
+    const translateZ = isMobile ? Math.max(180, total * 22) : Math.max(380, total * 48); // wider ring on desktop
 
     carouselImages.forEach((src, i) => {
         const figure = document.createElement('figure');
