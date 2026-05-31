@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let colHtml = `<div class="hero-col ${anim}" ${hideOnMobile}>`;
                 for (let i = 0; i < 2; i++) {
                     const randomImg = allImages[Math.floor(Math.random() * allImages.length)];
-                    colHtml += `<img src="${sanitize(randomImg)}" fetchpriority="high" decoding="async" alt="">`;
+                    colHtml += `<img src="${sanitize(randomImg)}" fetchpriority="high" loading="eager" decoding="async" alt="">`;
                 }
                 colHtml += '</div>';
                 heroBgHtml += colHtml;
@@ -149,7 +149,7 @@ function init3DCarousel(allImages) {
     const total = carouselImages.length;
     const spreadAngle = 360 / total;
     const isMobile = window.innerWidth <= 768;
-    const translateZ = isMobile ? Math.max(180, total * 22) : Math.max(380, total * 48); // wider ring on desktop
+    const translateZ = isMobile ? Math.max(150, total * 18) : Math.max(380, total * 48);
 
     carouselImages.forEach((src, i) => {
         const figure = document.createElement('figure');
